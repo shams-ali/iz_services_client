@@ -1,17 +1,28 @@
+const { assign } = Object;
+const required = ['name', 'vin', 'model_year'];
+
 const validate = values => {
+  const { email, zip, year } = values;
+
   const errors = {};
-  if (!values.name) {
-    errors.name = 'Required';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+  if (email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
     errors.email = 'Invalid email address';
   }
-  if (!values.favoriteColor) {
-    errors.favoriteColor = 'Required';
+  if (zip && zip.length !== 5) {
+    errors.zip = 'Must be five digits';
   }
-  return errors;
+  if (year && year.length !== 4) {
+    errors.year = 'Must be four digits';
+  }
+
+  return Object.assign(
+    errors,
+    required.reduce(
+      (requiredErrors, field) =>
+        assign(requiredErrors, !values[field] ? { [field]: 'Required' } : {}),
+      {}
+    )
+  );
 };
 
 export default validate;

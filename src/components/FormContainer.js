@@ -25,15 +25,13 @@ class FormContainer extends Component {
     const { onSubmit, forms } = this.props;
     const { page } = this.state;
     return (
-      <div>
-        <Form
-          previousPage={page === 1 ? null : this.previousPage}
-          onSubmit={page === size(forms) ? onSubmit : this.nextPage}
-          formName={forms[page - 1].name}
-          fields={forms[page - 1].fields}
-          key={forms[page - 1].name}
-        />
-      </div>
+      <Form
+        previousPage={page === 1 ? null : this.previousPage}
+        onSubmit={page === size(forms) ? onSubmit : this.nextPage}
+        formName={forms[page - 1].name}
+        fields={forms[page - 1].fields}
+        key={forms[page - 1].name}
+      />
     );
   }
 }

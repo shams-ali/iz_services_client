@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import validate from './Validate';
 import renderField from './RenderField';
+import { capitalize } from 'lodash';
 
 const Form = ({ handleSubmit, fields }) => {
   return (
@@ -11,7 +12,7 @@ const Form = ({ handleSubmit, fields }) => {
           name={name}
           type={type}
           component={renderField}
-          label={name}
+          label={capitalize(name)}
           key={name}
         />
       ))}
