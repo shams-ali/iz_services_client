@@ -1,17 +1,20 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 
 import { history } from './store';
 
 import App from './containers/App';
+import Invoice from './containers/Invoice';
+import Header from './containers/Header';
 
-const routes = (
+const Routes = () => (
   <ConnectedRouter history={history}>
-    <Switch>
+    <div>
+      <Header />
       <Route exact path="/" component={App} />
-      {/* NOTE: put other app routes here */}
-    </Switch>
+      <Route path="/invoice" component={Invoice} />
+    </div>
   </ConnectedRouter>
 );
-export default routes;
+export default Routes;

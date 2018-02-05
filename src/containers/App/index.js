@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import { getAPIData } from './actions';
 import { selectApiData } from './selectors';
-import NavbarInstance from '../../components/NavbarInstance';
 
 const getMyIp = apiData =>
   apiData && apiData.origin && apiData.origin.split(', ')[1];
@@ -18,14 +17,14 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <NavbarInstance />
         <div className="app-header">
-          <h2>Welcome to React</h2>
+          <h2>Welcome to the Registration Invoice Generator</h2>
         </div>
         <p className="app-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          To get started, click on Application in the navbar.
         </p>
         <p className="app-intro">Your IP is: {getMyIp(this.props.apiData)}</p>
+        {this.props.children}
       </div>
     );
   }
