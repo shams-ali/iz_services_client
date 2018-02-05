@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 
 import { getAPIData } from './actions';
 import { selectApiData } from './selectors';
-
-// import logo from './images/logo.svg';
+import NavbarInstance from '../../components/NavbarInstance';
 
 const getMyIp = apiData =>
   apiData && apiData.origin && apiData.origin.split(', ')[1];
@@ -19,8 +18,8 @@ class App extends Component {
   render() {
     return (
       <div className="app">
+        <NavbarInstance />
         <div className="app-header">
-          {/* <img src={logo} className="app-logo" alt="logo" /> */}
           <h2>Welcome to React</h2>
         </div>
         <p className="app-intro">
