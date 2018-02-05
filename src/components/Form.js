@@ -4,11 +4,12 @@ import validate from './Validate';
 import renderField from './RenderField';
 import { capitalize } from 'lodash';
 
-const Form = ({ handleSubmit, fields }) => {
+const Form = ({ handleSubmit, fields, previousPage }) => {
   return (
     <form onSubmit={handleSubmit}>
-      {fields.map(({ type = 'text', name }) => (
+      {fields.map(({ type = 'text', name, ...props }) => (
         <Field
+          {...props}
           name={name}
           type={type}
           component={renderField}

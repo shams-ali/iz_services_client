@@ -4,13 +4,13 @@ const forms = [
     fields: [
       { name: 'dealer' },
       { name: 'name' },
-      { name: 'phone' },
+      { name: 'phone', type: 'tel', maxLength: 10 },
       { name: 'email' },
       { name: 'dl' },
       { name: 'address' },
       { name: 'city' },
-      { name: 'state' },
-      { name: 'zip' }
+      { name: 'state', maxLength: 2 },
+      { name: 'zip', type: 'tel', maxLength: 5 }
     ]
   },
   {
@@ -19,8 +19,8 @@ const forms = [
       { name: 'vin' },
       { name: 'plate' },
       { name: 'make' },
-      { name: 'model_year' },
-      { name: 'exp_date', options: 'date', onFocus: true },
+      { name: 'model_year', type: 'tel', maxLength: 4 },
+      { name: 'exp_date', options: 'date' },
       { name: 'engine' },
       { name: 'case_type' },
       { name: 'case_status' },
@@ -30,16 +30,16 @@ const forms = [
   {
     name: 'fee',
     fields: [
-      { name: 'dmv_fee' },
-      { name: 'dmv_fee2' },
-      { name: 'service_fee' },
-      { name: 'other_fee' },
-      { name: 'extra_discount' },
-      { name: 'old_post_fee' },
+      { name: 'dmv_fee', type: 'number' },
+      { name: 'dmv_fee2', type: 'number' },
+      { name: 'service_fee', type: 'number' },
+      { name: 'other_fee', type: 'number' },
+      { name: 'extra_discount', type: 'number' },
+      { name: 'old_post_fee', type: 'number' },
       { name: 'ros_bos' },
       { name: 'ros_num' },
-      { name: 'tax' },
-      { name: 'vehicle_tax' },
+      { name: 'tax', type: 'number' },
+      { name: 'vehicle_tax', type: 'number' },
       { name: 'type' },
       { name: 'comments' },
       { name: 'status' }
@@ -47,7 +47,7 @@ const forms = [
   },
   {
     name: 'payment',
-    fields: [{ name: 'type' }, { name: 'amount' }]
+    fields: [{ name: 'type' }, { name: 'amount', type: 'number' }]
   }
 ];
 

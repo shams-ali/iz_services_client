@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { size } from 'lodash';
+import { capitalize, size } from 'lodash';
 import Form from './Form';
 
 class FormContainer extends Component {
@@ -9,7 +9,7 @@ class FormContainer extends Component {
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
     this.state = {
-      page: 1
+      page: 0
     };
   }
   nextPage() {
@@ -21,17 +21,20 @@ class FormContainer extends Component {
   }
 
   render() {
-    console.warn('hello world', this.state);
     const { onSubmit, forms } = this.props;
     const { page } = this.state;
+    const { name, fields } = forms[page];
     return (
-      <Form
-        previousPage={page === 1 ? null : this.previousPage}
-        onSubmit={page === size(forms) ? onSubmit : this.nextPage}
-        formName={forms[page - 1].name}
-        fields={forms[page - 1].fields}
-        key={forms[page - 1].name}
-      />
+      <div>
+        <h2>{capitalize(name)} Info</h2>
+        <Form
+          previousPage={page ? null : this.previousPage}
+          onSubmit={page === size(forms) ? onSubmit : this.nextPage}
+          formName={name}
+          fields={fields}
+          key={name}
+        />
+      </div>
     );
   }
 }

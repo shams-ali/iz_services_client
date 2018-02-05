@@ -1,5 +1,5 @@
 const { assign } = Object;
-const required = ['name', 'vin', 'model_year'];
+const required = ['vin', 'model_year'];
 
 const validate = values => {
   const { email, zip, year } = values;
