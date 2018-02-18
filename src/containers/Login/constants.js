@@ -1,3 +1,3 @@
-export const GET_API_DATA = 'containers/Login/GET_API_DATA';
-export const GET_API_DATA_LOADED = 'containers/Login/GET_API_DATA_LOADED';
-export const GET_API_DATA_ERROR = 'containers/Login/GET_API_DATA_ERROR';
+export const GET_AUTH = 'containers/Login/GET_AUTH';
+export const GET_AUTH_SUCCESS = 'containers/Login/GET_AUTH_SUCCESS';
+export const GET_AUTH_ERROR = 'containers/Login/GET_AUTH_ERROR';

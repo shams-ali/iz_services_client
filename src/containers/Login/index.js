@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { getAPIData } from './actions';
-import { selectApiData, selectApiDataError } from './selectors';
+import { getAuth } from './actions';
+import { selectAuth, selectAuthError } from './selectors';
 
 // import { getToken, getError } from './selectors';
 
@@ -18,23 +18,20 @@ class Login extends PureComponent {
   onSubmit() {
     const email = this.email.value;
     const password = this.password.value;
-    this.props.actions.getAPIData({ email, password });
-
-    // this.props.dispatch(authorize(email, password));
+    this.props.actions.getAuth({ email, password });
   }
 
   render() {
-    const { apiDataError, token } = this.props;
+    const { authError, auth } = this.props;
     console.log(this.props, 'this is props');
-    if (token && token !== 'undefined') {
+    console.log(auth, 'this is auth in login');
+    if (auth && auth !== 'undefined') {
       return <Redirect to="/" />;
     }
 
     return (
       <div>
-        {apiDataError && (
-          <div style={{ color: 'red' }}>{apiDataError.message}</div>
-        )}
+        {authError && <div style={{ color: 'red' }}>{authError}</div>}
         <div>
           <input
             ref={_ref => (this.email = _ref)}
@@ -58,12 +55,12 @@ class Login extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  apiData: selectApiData(state),
-  apiDataError: selectApiDataError(state)
+  auth: selectAuth(state),
+  authError: selectAuthError(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ getAPIData }, dispatch)
+  actions: bindActionCreators({ getAuth }, dispatch)
 });
 // const mapStateToProps = ({ containers: { authReducer } }) => authReducer;
 

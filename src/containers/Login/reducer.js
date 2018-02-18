@@ -1,32 +1,31 @@
 import { fromJS } from 'immutable';
 
-import {
-  GET_API_DATA,
-  GET_API_DATA_LOADED,
-  GET_API_DATA_ERROR
-} from './constants';
+import { GET_AUTH, GET_AUTH_SUCCESS, GET_AUTH_ERROR } from './constants';
 
 const initialState = fromJS({
-  apiData: null,
-  apiDataLoading: null,
-  apiDataLoaded: null,
-  apiDataError: null
+  auth: null,
+  authLoading: null,
+  authSuccess: null,
+  authError: null
 });
 
 const authReducer = (state = initialState, action) => {
+  console.log('action', action);
   switch (action.type) {
-    case GET_API_DATA:
-      return state.set('apiDataLoading', true).set('apiDataError', null);
-    case GET_API_DATA_LOADED:
+    case GET_AUTH:
+      return state.set('authLoading', true).set('authError', null);
+    case GET_AUTH_SUCCESS:
       return state
-        .set('apiData', action.data)
-        .set('apiDataLoading', false)
-        .set('apiDataLoaded', true);
-    case GET_API_DATA_ERROR:
+        .set('auth', action.data)
+        .set('authLoading', false)
+        .set('authSuccess', true)
+        .set('authError', null);
+    case GET_AUTH_ERROR:
       return state
-        .set('apiDataLoading', false)
-        .set('apiDataLoaded', false)
-        .set('apiDataError', action.error);
+        .set('auth', null)
+        .set('authLoading', false)
+        .set('authSuccess', false)
+        .set('authError', action.error);
     default:
       return state;
   }

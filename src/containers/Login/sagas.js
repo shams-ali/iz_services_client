@@ -1,25 +1,26 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { getAPIDataLoaded, getAPIDataError } from './actions';
-import { GET_API_DATA } from './constants';
+import { getAuthSuccess, getAuthError } from './actions';
+import { GET_AUTH } from './constants';
 
 const fetchData = (url, data) =>
   axios
     .post(url, data)
-    .then(result => ({ result }))
+    .then(({ data: authData }) => ({ authData }))
     .catch(error => ({ error }));
 
-function* getApiData({ data }) {
-  const { error, result } = yield call(fetchData, '/v1', data);
+function* getAuth({ data }) {
+  const { error, authData } = yield call(fetchData, '/v1/users/login', data);
   if (error) {
-    yield put(getAPIDataError(error));
+    yield put(getAuthError(error.message));
+  } else {
+    console.log('authData', authData);
+    yield put(getAuthSuccess(authData));
   }
-  console.log(result, 'this is result');
-  yield put(getAPIDataLoaded(result));
 }
 
-function* apiData() {
-  yield takeLatest(GET_API_DATA, getApiData);
+function* auth() {
+  yield takeLatest(GET_AUTH, getAuth);
 }
 
-export default apiData;
+export default auth;

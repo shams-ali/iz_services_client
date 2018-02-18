@@ -1,20 +1,16 @@
-import {
-  GET_API_DATA,
-  GET_API_DATA_LOADED,
-  GET_API_DATA_ERROR
-} from './constants';
+import { GET_AUTH, GET_AUTH_SUCCESS, GET_AUTH_ERROR } from './constants';
 
-export const getAPIData = data => ({
-  type: GET_API_DATA,
+export const getAuth = data => ({
+  type: GET_AUTH,
   data
 });
 
-export const getAPIDataLoaded = data => ({
-  type: GET_API_DATA_LOADED,
+export const getAuthSuccess = data => ({
+  type: GET_AUTH_SUCCESS,
   data
 });
 
-export const getAPIDataError = error => ({
-  type: GET_API_DATA_ERROR,
+export const getAuthError = error => ({
+  type: GET_AUTH_ERROR,
   error
 });

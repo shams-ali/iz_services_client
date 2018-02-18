@@ -5,12 +5,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './styles/main.css';
 import store from './store';
-import Routes from './routes';
+import Main from './main';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
   <Provider store={store}>
-    <Routes />
+    <Main />
   </Provider>,
   document.getElementById('root')
 );
