@@ -32,6 +32,7 @@ class FormContainer extends Component {
           onSubmit={page === size(forms) - 1 ? onSubmit : this.nextPage}
           formName={name}
           fields={fields}
+          lastPage={page === size(forms) - 1}
           key={name}
         />
       </div>

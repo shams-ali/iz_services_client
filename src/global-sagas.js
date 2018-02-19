@@ -2,10 +2,12 @@ import { fork, all } from 'redux-saga/effects';
 
 import appSagas from './containers/App/sagas';
 import loginSagas from './containers/Login/sagas';
+import invoiceSagas from './containers/Invoice/sagas';
 
 const sagas = [
   appSagas,
-  loginSagas
+  loginSagas,
+  invoiceSagas
   // NOTE: put other app sagas here
 ];
 

@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { renderTextField, renderFieldArray } from './formElements';
 import validate from './Validate';
 
-const Form = ({ handleSubmit, fields, previousPage, formName }) => {
+const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
   return (
     <form onSubmit={handleSubmit}>
       {['fee', 'payment'].includes(formName) ? (
@@ -37,7 +37,11 @@ const Form = ({ handleSubmit, fields, previousPage, formName }) => {
           secondary
         />
       )}
-      <RaisedButton label="Next" type="submit" primary />
+      <RaisedButton
+        label={lastPage ? 'Finish' : 'Next'}
+        type="submit"
+        primary
+      />
     </form>
   );
 };

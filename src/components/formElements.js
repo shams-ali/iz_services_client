@@ -8,6 +8,8 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 export const renderTextField = ({
   input,
@@ -74,48 +76,40 @@ export const renderField = ({
   </div>
 );
 
-export class renderFieldArray extends Component {
-  componentDidMount() {
-    this.props.fields.push();
-  }
-  render() {
-    const {
-      formFields,
-      formName,
-      fields,
-      meta: { error, submitFailed }
-    } = this.props;
-    return (
-      <article>
-        {fields.map((field, index) => (
-          <section key={index}>
-            <IconButton
-              type="button"
-              title="Remove Member"
-              onClick={() => fields.remove(index)}
-            >
-              <NavigationClose />
-              <h4>#{index + 1}</h4>
-            </IconButton>
+export const renderFieldArray = ({
+  formFields,
+  formName,
+  fields,
+  meta: { error, submitFailed }
+}) => (
+  <article>
+    {fields.map((field, index) => (
+      <section key={index}>
+        <IconButton
+          type="button"
+          title="Remove Member"
+          onClick={() => fields.remove(index)}
+        >
+          <NavigationClose />
+          <h4>#{index + 1}</h4>
+        </IconButton>
 
-            {formFields.map(({ type = 'text', name, ...props }) => (
-              <div key={name}>
-                <Field
-                  {...props}
-                  name={`${field}name`}
-                  type={type}
-                  component={renderTextField}
-                  label={capitalize(name)}
-                />
-              </div>
-            ))}
-          </section>
+        {formFields.map(({ type = 'text', name, ...props }) => (
+          <div key={name}>
+            <Field
+              {...props}
+              name={`${field}${name}`}
+              type={type}
+              component={renderTextField}
+              label={capitalize(name)}
+            />
+          </div>
         ))}
-        <button type="button" onClick={() => fields.push({})}>
-          Add A {formName}
-        </button>
-        {submitFailed && error && <span>{error}</span>}
-      </article>
-    );
-  }
-}
+      </section>
+    ))}
+    <FloatingActionButton type="button" onClick={() => fields.push({})}>
+      <ContentAdd />
+    </FloatingActionButton>
+    {submitFailed && error && <span>{error}</span>}
+  </article>
+);
