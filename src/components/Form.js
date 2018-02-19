@@ -1,27 +1,43 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import validate from './Validate';
-import renderField from './RenderField';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { capitalize } from 'lodash';
+import RaisedButton from 'material-ui/RaisedButton';
+import { renderTextField, renderFieldArray } from './formElements';
+import validate from './Validate';
 
-const Form = ({ handleSubmit, fields, previousPage }) => {
+const Form = ({ handleSubmit, fields, previousPage, formName }) => {
   return (
     <form onSubmit={handleSubmit}>
-      {fields.map(({ type = 'text', name, ...props }) => (
-        <Field
-          {...props}
-          name={name}
-          type={type}
-          component={renderField}
-          label={capitalize(name)}
-          key={name}
+      {['fee', 'payment'].includes(formName) ? (
+        <FieldArray
+          name={formName}
+          formName={formName}
+          formFields={fields}
+          component={renderFieldArray}
         />
-      ))}
-      <div>
-        <button type="submit" className="next">
-          Next
-        </button>
-      </div>
+      ) : (
+        fields.map(({ type = 'text', name, ...props }) => (
+          <div key={name}>
+            <Field
+              {...props}
+              name={name}
+              type={type}
+              component={renderTextField}
+              label={capitalize(name)}
+            />
+          </div>
+        ))
+      )}
+
+      {previousPage && (
+        <RaisedButton
+          label="Previous"
+          type="button"
+          onClick={previousPage}
+          secondary
+        />
+      )}
+      <RaisedButton label="Next" type="submit" primary />
     </form>
   );
 };

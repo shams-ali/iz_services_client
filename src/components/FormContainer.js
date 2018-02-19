@@ -28,8 +28,8 @@ class FormContainer extends Component {
       <div>
         <h2>{capitalize(name)} Info</h2>
         <Form
-          previousPage={page ? null : this.previousPage}
-          onSubmit={page === size(forms) ? onSubmit : this.nextPage}
+          previousPage={page ? this.previousPage : null}
+          onSubmit={page === size(forms) - 1 ? onSubmit : this.nextPage}
           formName={name}
           fields={fields}
           key={name}

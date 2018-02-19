@@ -1,10 +1,13 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React, { Component } from 'react';
+import { capitalize } from 'lodash';
+import { Field } from 'redux-form';
 import TextField from 'material-ui/TextField';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import IconButton from 'material-ui/IconButton';
 
 export const renderTextField = ({
   input,
@@ -54,3 +57,65 @@ export const renderSelectField = ({
     {...custom}
   />
 );
+
+export const renderField = ({
+  input,
+  label,
+  maxLength,
+  type,
+  meta: { touched, error }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} maxLength={maxLength} />
+      {touched && error && <span>{error}</span>}
+    </div>
+  </div>
+);
+
+export class renderFieldArray extends Component {
+  componentDidMount() {
+    this.props.fields.push();
+  }
+  render() {
+    const {
+      formFields,
+      formName,
+      fields,
+      meta: { error, submitFailed }
+    } = this.props;
+    return (
+      <article>
+        {fields.map((field, index) => (
+          <section key={index}>
+            <IconButton
+              type="button"
+              title="Remove Member"
+              onClick={() => fields.remove(index)}
+            >
+              <NavigationClose />
+              <h4>#{index + 1}</h4>
+            </IconButton>
+
+            {formFields.map(({ type = 'text', name, ...props }) => (
+              <div key={name}>
+                <Field
+                  {...props}
+                  name={`${field}name`}
+                  type={type}
+                  component={renderTextField}
+                  label={capitalize(name)}
+                />
+              </div>
+            ))}
+          </section>
+        ))}
+        <button type="button" onClick={() => fields.push({})}>
+          Add A {formName}
+        </button>
+        {submitFailed && error && <span>{error}</span>}
+      </article>
+    );
+  }
+}
