@@ -43,7 +43,10 @@ const forms = [
   },
   {
     name: 'payment',
-    fields: [{ name: 'type' }, { name: 'amount', type: 'number' }]
+    fields: [
+      { name: 'type', select: ['cash', 'credit', 'check'] },
+      { name: 'amount', type: 'number' }
+    ]
   }
 ];
 

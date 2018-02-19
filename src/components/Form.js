@@ -2,8 +2,13 @@ import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { capitalize } from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
-import { renderTextField, renderFieldArray } from './formElements';
+import {
+  renderTextField,
+  renderFieldArray,
+  renderSelectField
+} from './formElements';
 import validate from './Validate';
+import MenuItem from 'material-ui/MenuItem';
 
 const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
   return (
@@ -16,15 +21,28 @@ const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
           component={renderFieldArray}
         />
       ) : (
-        fields.map(({ type = 'text', name, ...props }) => (
+        fields.map(({ type = 'text', name, select, ...props }) => (
           <div key={name}>
-            <Field
-              {...props}
-              name={name}
-              type={type}
-              component={renderTextField}
-              label={capitalize(name)}
-            />
+            {select ? (
+              <Field
+                {...props}
+                name={name}
+                component={renderSelectField}
+                label={capitalize(name)}
+              >
+                {select.map(value => (
+                  <MenuItem value={value} primaryText={value} />
+                ))}
+              </Field>
+            ) : (
+              <Field
+                {...props}
+                name={name}
+                type={type}
+                component={renderTextField}
+                label={capitalize(name)}
+              />
+            )}
           </div>
         ))
       )}

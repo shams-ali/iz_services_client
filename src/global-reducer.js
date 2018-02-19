@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import { reducer as modal } from 'react-redux-dialog';
+import { reducer as search } from 'redux-search';
 import { routerReducer as router } from 'react-router-redux';
 
 import appReducer from './containers/App/reducer';
@@ -21,7 +22,8 @@ const createGlobalReducer = () =>
     ...containersReducer,
     form,
     router,
-    modal
+    modal,
+    search
   });
 
 export default createGlobalReducer;

@@ -94,15 +94,28 @@ export const renderFieldArray = ({
           <h4>#{index + 1}</h4>
         </IconButton>
 
-        {formFields.map(({ type = 'text', name, ...props }) => (
+        {formFields.map(({ type = 'text', select, name, ...props }) => (
           <div key={name}>
-            <Field
-              {...props}
-              name={`${field}${name}`}
-              type={type}
-              component={renderTextField}
-              label={capitalize(name)}
-            />
+            {select ? (
+              <Field
+                {...props}
+                name={name}
+                component={renderSelectField}
+                label={capitalize(name)}
+              >
+                {select.map(value => (
+                  <MenuItem key={value} value={value} primaryText={value} />
+                ))}
+              </Field>
+            ) : (
+              <Field
+                {...props}
+                name={`${field}${name}`}
+                type={type}
+                component={renderTextField}
+                label={capitalize(name)}
+              />
+            )}
           </div>
         ))}
       </section>

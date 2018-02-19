@@ -6,14 +6,7 @@ import { connect } from 'react-redux';
 import { getAPIData } from './actions';
 import { selectApiData } from './selectors';
 
-const getMyIp = apiData =>
-  apiData && apiData.origin && apiData.origin.split(', ')[1];
-
 class App extends Component {
-  componentWillMount() {
-    this.props.actions.getAPIData();
-  }
-
   render() {
     return (
       <div className="app">
@@ -23,28 +16,9 @@ class App extends Component {
         <p className="app-intro">
           To get started, click on Application in the navbar.
         </p>
-        <p className="app-intro">Your IP is: {getMyIp(this.props.apiData)}</p>
-        {this.props.children}
       </div>
     );
   }
 }
 
-App.defaultProps = {
-  apiData: {}
-};
-
-App.propTypes = {
-  actions: PropTypes.object.isRequired,
-  apiData: PropTypes.object
-};
-
-const mapStateToProps = state => ({
-  apiData: selectApiData(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ getAPIData }, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
