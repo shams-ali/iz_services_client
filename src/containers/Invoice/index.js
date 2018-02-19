@@ -6,8 +6,8 @@ import { setModal } from 'react-redux-dialog';
 import FormContainer from '../../components/FormContainer';
 import Modal from '../../components/modal';
 import forms from './questions';
-import { selectInvoiceSuccess, selectInvoiceError } from './selectors';
-import { createInvoice } from './actions';
+import { selectApiRequestSuccess, selectApiRequestError } from './selectors';
+import { apiRequest } from './actions';
 
 class Invoice extends Component {
   componentWillReceiveProps({ success }) {
@@ -18,10 +18,10 @@ class Invoice extends Component {
     });
   }
   render() {
-    const { error, actions: { createInvoice } } = this.props;
+    const { error, actions: { apiRequest } } = this.props;
     return (
       <div>
-        <FormContainer onSubmit={createInvoice} forms={forms} />
+        <FormContainer onSubmit={apiRequest} forms={forms} />
         {error && <div>{error.message}</div>}
       </div>
     );
@@ -29,12 +29,12 @@ class Invoice extends Component {
 }
 
 const mapStateToProps = state => ({
-  success: selectInvoiceSuccess(state),
-  error: selectInvoiceError(state)
+  success: selectApiRequestSuccess(state),
+  error: selectApiRequestError(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ createInvoice, setModal }, dispatch)
+  actions: bindActionCreators({ apiRequest, setModal }, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

@@ -1,34 +1,31 @@
 import { fromJS } from 'immutable';
 
 import {
-  CREATE_INVOICE,
-  CREATE_INVOICE_SUCCESS,
-  CREATE_INVOICE_ERROR
+  API_REQUEST,
+  API_REQUEST_SUCCESS,
+  API_REQUEST_ERROR
 } from './constants';
 
 const initialState = fromJS({
-  createInvoiceLoading: null,
-  createInvoiceSuccess: null,
-  createInvoiceError: null
+  apiRequestLoading: null,
+  apiRequestSuccess: null,
+  apiRequestError: null
 });
 
 const authReducer = (state = initialState, action) => {
-  console.log(action, 'this is action');
   switch (action.type) {
-    case CREATE_INVOICE:
+    case API_REQUEST:
+      return state.set('apiRequestLoading', true).set('apiRequestError', null);
+    case API_REQUEST_SUCCESS:
       return state
-        .set('createInvoiceLoading', true)
-        .set('createInvoiceError', null);
-    case CREATE_INVOICE_SUCCESS:
+        .set('apiRequestLoading', false)
+        .set('apiRequestSuccess', action.success)
+        .set('apiRequestError', null);
+    case API_REQUEST_ERROR:
       return state
-        .set('createInvoiceLoading', false)
-        .set('createInvoiceSuccess', action.success)
-        .set('createInvoiceError', null);
-    case CREATE_INVOICE_ERROR:
-      return state
-        .set('createInvoiceLoading', false)
-        .set('createInvoiceSuccess', false)
-        .set('createInvoiceError', action.error);
+        .set('apiRequestLoading', false)
+        .set('apiRequestSuccess', false)
+        .set('apiRequestError', action.error);
     default:
       return state;
   }

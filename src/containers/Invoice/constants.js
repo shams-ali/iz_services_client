@@ -1,3 +1,3 @@
-export const CREATE_INVOICE = 'containers/Login/CREATE_INVOICE';
-export const CREATE_INVOICE_SUCCESS = 'containers/Login/CREATE_INVOICE_SUCCESS';
-export const CREATE_INVOICE_ERROR = 'containers/Login/CREATE_INVOICE_ERROR';
+export const API_REQUEST = 'containers/Invoice/API_REQUEST';
+export const API_REQUEST_SUCCESS = 'containers/Invoice/API_REQUEST_SUCCESS';
+export const API_REQUEST_ERROR = 'containers/Invoice/API_REQUEST_ERROR';

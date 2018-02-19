@@ -1,20 +1,20 @@
 import {
-  CREATE_INVOICE,
-  CREATE_INVOICE_SUCCESS,
-  CREATE_INVOICE_ERROR
+  API_REQUEST,
+  API_REQUEST_SUCCESS,
+  API_REQUEST_ERROR
 } from './constants';
 
-export const createInvoice = data => ({
-  type: CREATE_INVOICE,
+export const apiRequest = data => ({
+  type: API_REQUEST,
   data
 });
 
-export const createInvoiceSuccess = success => ({
-  type: CREATE_INVOICE_SUCCESS,
+export const apiRequestSuccess = success => ({
+  type: API_REQUEST_SUCCESS,
   success
 });
 
-export const createInvoiceError = error => ({
-  type: CREATE_INVOICE_ERROR,
+export const apiRequestError = error => ({
+  type: API_REQUEST_ERROR,
   error
 });

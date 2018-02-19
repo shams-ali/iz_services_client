@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
 import axios from 'axios';
 import CardItem from './cardItem';
-import { List, ListItem } from 'material-ui/List';
 
 const KEYS_TO_FILTERS = ['case_status', 'case_type', 'vin', 'name'];
 

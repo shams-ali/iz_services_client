@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { capitalize } from 'lodash';
 import { Field } from 'redux-form';
 import TextField from 'material-ui/TextField';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
+import { RadioButtonGroup } from 'material-ui/RadioButton';
 import Checkbox from 'material-ui/Checkbox';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';

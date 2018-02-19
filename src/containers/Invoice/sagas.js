@@ -1,28 +1,29 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { createInvoiceSuccess, createInvoiceError } from './actions';
-import { CREATE_INVOICE } from './constants';
+import { apiRequestSuccess, apiRequestError } from './actions';
+import { API_REQUEST } from './constants';
 
-const postInvoice = (url, data) =>
+const initializeApiRequest = (url, data) =>
   axios
     .post(url, data)
     .then(({ data: success }) => ({ success }))
     .catch(error => ({ error }));
 
-function* createInvoice({ data }) {
-  console.log(data, 'this is data');
-  const { error, success } = yield call(postInvoice, '/v1/invoice', data);
+function* apiRequest({ data }) {
+  const { error, success } = yield call(
+    initializeApiRequest,
+    '/v1/invoice',
+    data
+  );
   if (error) {
-    console.log(error, 'this is error');
-    yield put(createInvoiceError(error.message));
+    yield put(apiRequestError(error.message));
   } else {
-    console.log('success', success);
-    yield put(createInvoiceSuccess(success));
+    yield put(apiRequestSuccess(success));
   }
 }
 
 function* invoice() {
-  yield takeLatest(CREATE_INVOICE, createInvoice);
+  yield takeLatest(API_REQUEST, apiRequest);
 }
 
 export default invoice;
