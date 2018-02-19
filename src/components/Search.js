@@ -1,32 +1,31 @@
 import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import CardItem from './cardItem';
+import {
+  selectApiRequestSuccess,
+  selectApiRequestError
+} from '../containers/Invoice/selectors';
+import { apiRequest } from '../containers/Invoice/actions';
 
-const KEYS_TO_FILTERS = ['case_status', 'case_type', 'vin', 'name'];
+const filterBy = ['case_status', 'case_type', 'vin', 'name'];
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: '',
-      invoices: []
+      searchTerm: ''
     };
     this.searchUpdated = this.searchUpdated.bind(this);
-    this.getInvoices = this.getInvoices.bind(this);
   }
   componentDidMount() {
-    this.getInvoices();
-  }
-
-  getInvoices() {
-    axios
-      .get('/v1/invoice')
-      .then(({ data: invoices }) => {
-        console.log(invoices);
-        this.setState({ invoices });
-      })
-      .catch(err => console.error(err));
+    this.props.actions.apiRequest({
+      method: 'get',
+      url: '/v1/invoice'
+    });
   }
 
   searchUpdated(term) {
@@ -34,9 +33,8 @@ class Search extends Component {
   }
 
   render() {
-    const filteredInvoices = this.state.invoices.filter(
-      createFilter(this.state.searchTerm, KEYS_TO_FILTERS)
-    );
+    const { invoices } = this.props;
+    const { searchTerm } = this.state;
 
     return (
       <section className="container">
@@ -44,13 +42,24 @@ class Search extends Component {
           <SearchInput className="search-input" onChange={this.searchUpdated} />
         </div>
         <div className="row active-with-click">
-          {filteredInvoices.map(({ _id, ...props }) => (
-            <CardItem key={_id} id={_id} {...props} />
-          ))}
+          {invoices
+            .filter(createFilter(searchTerm, filterBy))
+            .map(({ _id, ...props }) => (
+              <CardItem key={_id} id={_id} {...props} />
+            ))}
         </div>
       </section>
     );
   }
 }
 
-export default Search;
+const mapStateToProps = state => ({
+  invoices: selectApiRequestSuccess(state),
+  error: selectApiRequestError(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({ apiRequest }, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -8,7 +8,7 @@ import {
 
 const initialState = fromJS({
   apiRequestLoading: null,
-  apiRequestSuccess: null,
+  apiRequestSuccess: [],
   apiRequestError: null
 });
 

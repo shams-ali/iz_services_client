@@ -25,6 +25,7 @@ class Invoice extends Component {
           onSubmit={data =>
             postInvoice({
               url: '/v1/invoice',
+              method: 'post',
               data
             })
           }
