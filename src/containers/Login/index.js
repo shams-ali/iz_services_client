@@ -1,58 +1,54 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { getAuth } from './actions';
+import validate from './validate';
+import { renderTextField } from '../../components/formElements';
 import { selectAuth, selectAuthError } from './selectors';
 
-// import { getToken, getError } from './selectors';
+let MaterialUiForm = props => {
+  const {
+    auth,
+    authError,
+    handleSubmit,
+    pristine,
+    reset,
+    submitting,
+    actions: { getAuth }
+  } = props;
 
-// import { authorize } from './reducer';
-
-class Login extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.onSubmit = this.onSubmit.bind(this);
+  if (auth && auth !== 'undefined') {
+    return <Redirect to="/" />;
   }
 
-  onSubmit() {
-    const email = this.email.value;
-    const password = this.password.value;
-    this.props.actions.getAuth({ email, password });
-  }
-
-  render() {
-    const { authError, auth } = this.props;
-    console.log(this.props, 'this is props');
-    console.log(auth, 'this is auth in login');
-    if (auth && auth !== 'undefined') {
-      return <Redirect to="/" />;
-    }
-
-    return (
+  return (
+    <form onSubmit={handleSubmit(getAuth)}>
       <div>
-        {authError && <div style={{ color: 'red' }}>{authError}</div>}
-        <div>
-          <input
-            ref={_ref => (this.email = _ref)}
-            type="text"
-            placeholder="email"
-          />
-        </div>
-        <div>
-          <input
-            ref={_ref => (this.password = _ref)}
-            type="password"
-            placeholder="password"
-          />
-        </div>
-        <div>
-          <button onClick={this.onSubmit}>Submit</button>
-        </div>
+        <Field name="email" component={renderTextField} label="Email" />
       </div>
-    );
-  }
-}
+      <div>
+        <Field
+          name="password"
+          component={renderTextField}
+          label="Password"
+          type="password"
+        />
+      </div>
+      {authError && <strong>{authError}</strong>}
+
+      <div>
+        <button type="submit" disabled={pristine || submitting}>
+          Submit
+        </button>
+        <button type="button" disabled={pristine || submitting} onClick={reset}>
+          Clear Values
+        </button>
+      </div>
+    </form>
+  );
+};
 
 const mapStateToProps = state => ({
   auth: selectAuth(state),
@@ -62,7 +58,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ getAuth }, dispatch)
 });
-// const mapStateToProps = ({ containers: { authReducer } }) => authReducer;
 
-// export default connect(mapStateToProps)(Login);
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+MaterialUiForm = reduxForm({
+  form: 'MaterialUiForm', // a unique identifier for this form
+  validate,
+  asyncBlurFields: ['username']
+})(MaterialUiForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MaterialUiForm);

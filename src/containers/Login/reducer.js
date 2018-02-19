@@ -10,7 +10,6 @@ const initialState = fromJS({
 });
 
 const authReducer = (state = initialState, action) => {
-  console.log('action', action);
   switch (action.type) {
     case GET_AUTH:
       return state.set('authLoading', true).set('authError', null);

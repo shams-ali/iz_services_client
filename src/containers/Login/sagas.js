@@ -10,6 +10,7 @@ const fetchData = (url, data) =>
     .catch(error => ({ error }));
 
 function* getAuth({ data }) {
+  console.log(data, 'this is data');
   const { error, authData } = yield call(fetchData, '/v1/users/login', data);
   if (error) {
     yield put(getAuthError(error.message));

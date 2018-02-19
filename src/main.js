@@ -10,9 +10,9 @@ import Invoice from './containers/Invoice';
 const Routes = () => (
   <ConnectedRouter history={history}>
     <Switch>
-      <Route path="/login" component={Login} />
       <Layout>
         <Route exact path="/" component={App} />
+        <Route exact path="/login" component={Login} />
         <Route path="/invoice" component={Invoice} />
       </Layout>
     </Switch>
