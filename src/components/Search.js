@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
 import axios from 'axios';
-// import emails from './mails';
+import CardItem from './cardItem';
+import { List, ListItem } from 'material-ui/List';
 
-const KEYS_TO_FILTERS = ['case_status', 'case_type', 'vin'];
+const KEYS_TO_FILTERS = ['case_status', 'case_type', 'vin', 'name'];
 
 class Search extends Component {
   constructor(props) {
@@ -39,15 +40,16 @@ class Search extends Component {
     );
 
     return (
-      <div>
-        <SearchInput className="search-input" onChange={this.searchUpdated} />
-        {filteredInvoices.map(({ vin, _id, case_status, case_type }) => (
-          <div className="mail" key={_id}>
-            {<div className="from">{vin}</div>}
-            {/* <div className="subject">{email.subject}</div> */}
-          </div>
-        ))}
-      </div>
+      <section className="container">
+        <div className="page-header">
+          <SearchInput className="search-input" onChange={this.searchUpdated} />
+        </div>
+        <div className="row active-with-click">
+          {filteredInvoices.map(({ _id, ...props }) => (
+            <CardItem key={_id} id={_id} {...props} />
+          ))}
+        </div>
+      </section>
     );
   }
 }
