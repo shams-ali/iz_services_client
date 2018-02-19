@@ -18,10 +18,18 @@ class Invoice extends Component {
     });
   }
   render() {
-    const { error, actions: { apiRequest } } = this.props;
+    const { error, actions: { apiRequest: postInvoice } } = this.props;
     return (
       <div>
-        <FormContainer onSubmit={apiRequest} forms={forms} />
+        <FormContainer
+          onSubmit={data =>
+            postInvoice({
+              url: '/v1/invoice',
+              data
+            })
+          }
+          forms={forms}
+        />
         {error && <div>{error.message}</div>}
       </div>
     );

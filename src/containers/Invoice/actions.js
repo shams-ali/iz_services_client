@@ -4,9 +4,9 @@ import {
   API_REQUEST_ERROR
 } from './constants';
 
-export const apiRequest = data => ({
+export const apiRequest = config => ({
   type: API_REQUEST,
-  data
+  config
 });
 
 export const apiRequestSuccess = success => ({
