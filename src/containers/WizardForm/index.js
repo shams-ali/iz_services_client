@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { push } from 'react-router-redux';
-import { setModal, unsetModal } from 'react-redux-dialog';
 import { capitalize, size } from 'lodash';
 import Form from '../../components/Form';
 

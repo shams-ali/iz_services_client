@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
 import CardItem from '../../components/cardItem';
+import './index.css';
 
 class CardContainer extends Component {
   constructor(props) {
@@ -9,13 +10,6 @@ class CardContainer extends Component {
       searchTerm: ''
     };
     this.searchUpdated = this.searchUpdated.bind(this);
-  }
-  componentDidMount() {
-    const { type, actions } = this.props;
-    actions.apiRequest({
-      method: 'get',
-      url: `/v1/${type}`
-    });
   }
 
   searchUpdated(term) {
@@ -26,7 +20,7 @@ class CardContainer extends Component {
     const { items, filterBy, ...rest } = this.props;
     const { searchTerm } = this.state;
     return (
-      <section className="container">
+      <section className="card-container">
         <div className="page-header">
           <SearchInput className="search-input" onChange={this.searchUpdated} />
         </div>

@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import { setModal, unsetModal } from 'react-redux-dialog';
+import { find, pick } from 'lodash';
 import WizardForm from '../../containers/WizardForm';
 import Card from '../../containers/Card';
+import Table from '../../components/Table';
 import forms from './questions';
 
 import Modal from '../../components/modal';
@@ -16,6 +18,11 @@ import {
 import { apiRequest } from './actions';
 
 class Invoice extends Component {
+  componentDidMount() {
+    const { actions } = this.props;
+    actions.apiRequest({ method: 'get', url: `/v1/invoice` });
+  }
+
   componentWillReceiveProps({ success, error }) {
     const { actions } = this.props;
     if (error) {
@@ -39,18 +46,24 @@ class Invoice extends Component {
       actions.push('/invoice');
     }
   }
+
   render() {
-    const { match, invoices, ...rest } = this.props;
-    if (match.params.id === 'new') {
+    const { match: { params: { id } }, invoices, ...rest } = this.props;
+    if (id === 'new') {
       return <WizardForm forms={forms} {...rest} />;
-    } else if (match.params.id) {
-      return <div>render card details component here</div>;
+    } else if (id) {
+      console.log(invoices, id);
+      return (
+        <Table
+          mainFields={pick(find(invoices, { _id: id }), ['fee', 'payment'])}
+          {...rest}
+        />
+      );
     }
     return (
       <Card
         items={invoices}
         filterBy={['case_status', 'case_type', 'vin', 'name']}
-        type={'invoice'}
         {...rest}
       />
     );

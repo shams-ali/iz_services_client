@@ -72,7 +72,7 @@ class CardItem extends Component {
   }
 
   render() {
-    const { name, make, dealer, vin, model_year, notes, comments } = this.props;
+    const { name, make, dealer, vin, model_year, comments, id } = this.props;
     const { flipped, icon, card } = this.state;
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -98,7 +98,7 @@ class CardItem extends Component {
           </button>
           <div className="mc-footer">
             {flipped && <h4>Action Items</h4>}
-            <a className="fas fa-fw fa-check" />
+            <a className="fas fa-fw fa-check" href={`/invoice/${id}`} />
             <a className="fas fa-fw fa-edit" />
             <a className="fas fa-fw fa-print" />
             <a className="fas fa-fw fa-trash" onClick={this.openModal} />
