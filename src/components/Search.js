@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux';
 import CardItem from './cardItem';
 import {
   selectApiRequestInvoices,
-  selectApiRequestError,
-  selectApiRequestSuccess
+  selectApiRequestError
 } from '../containers/Invoice/selectors';
 import { apiRequest } from '../containers/Invoice/actions';
 
@@ -53,7 +52,6 @@ class Search extends Component {
 
 const mapStateToProps = state => ({
   invoices: selectApiRequestInvoices(state),
-  success: selectApiRequestSuccess(state),
   error: selectApiRequestError(state)
 });
 

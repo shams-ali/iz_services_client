@@ -5,11 +5,12 @@ import { API_REQUEST } from './constants';
 
 const initializeApiRequest = config =>
   axios(config)
-    .then(({ data: success }) => ({ success }))
+    .then(success => ({ success }))
     .catch(error => ({ error }));
 
 function* apiRequest({ config }) {
   const { error, success } = yield call(initializeApiRequest, config);
+  console.log(success, 'this is res in sagas');
   if (error) {
     yield put(apiRequestError(error.message));
   } else {

@@ -30,7 +30,6 @@ class CardItem extends Component {
     this.deleteInvoice = this.deleteInvoice.bind(this);
   }
   componentWillReceiveProps({ error, success }) {
-    console.log(success, 'this is success');
     const { actions } = this.props;
     if (error) {
       actions.setModal(Modal, {
@@ -43,7 +42,7 @@ class CardItem extends Component {
         modalProps: { isOpen: true }
       });
     }
-    if (success && !isArray(success)) {
+    if (success.status === 204) {
       actions.unsetModal();
       actions.push('/');
     }
@@ -100,13 +99,8 @@ class CardItem extends Component {
     const { actions, id } = this.props;
     actions.apiRequest({
       method: 'delete',
-      url: `v1/invoices/${id}`
+      url: `v1/invoice/${id}`
     });
-  }
-
-  closeModal() {
-    const { actions } = this.props;
-    actions.unsetModal();
   }
 
   render() {
