@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setModal } from 'react-redux-dialog';
+import { push } from 'react-router-redux';
+import { setModal, unsetModal } from 'react-redux-dialog';
 
 import FormContainer from '../../components/FormContainer';
 import Modal from '../../components/modal';
@@ -10,15 +11,25 @@ import { selectApiRequestSuccess, selectApiRequestError } from './selectors';
 import { apiRequest } from './actions';
 
 class Invoice extends Component {
-  componentWillReceiveProps({ success }) {
-    const { actions: { setModal } } = this.props;
-    setModal(Modal, {
-      componentProps: { success },
-      modalProps: { isOpen: !!success }
-    });
+  componentWillReceiveProps({ success, error }) {
+    const { actions } = this.props;
+    if (error || success.status !== 201) {
+      actions.setModal(Modal, {
+        componentProps: {
+          title: error.message || 'There was an error with your request',
+          open: true,
+          onRequestClose: actions.unsetModal,
+          error
+        },
+        modalProps: { isOpen: true }
+      });
+    }
+    if (success.status === 201) {
+      actions.push('/');
+    }
   }
   render() {
-    const { error, actions: { apiRequest: postInvoice } } = this.props;
+    const { actions: { apiRequest: postInvoice } } = this.props;
     return (
       <div>
         <FormContainer
@@ -31,7 +42,6 @@ class Invoice extends Component {
           }
           forms={forms}
         />
-        {error && <div>{error.message}</div>}
       </div>
     );
   }
@@ -43,7 +53,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ apiRequest, setModal }, dispatch)
+  actions: bindActionCreators(
+    { apiRequest, setModal, unsetModal, push },
+    dispatch
+  )
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

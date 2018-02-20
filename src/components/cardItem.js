@@ -5,7 +5,6 @@ import { push } from 'react-router-redux';
 import { setModal, unsetModal } from 'react-redux-dialog';
 import _ from 'lodash';
 import { List, ListItem } from 'material-ui/List';
-import FlatButton from 'material-ui/FlatButton';
 import Modal from './modal';
 
 import { apiRequest } from '../containers/Invoice/actions';
@@ -13,8 +12,6 @@ import {
   selectApiRequestSuccess,
   selectApiRequestError
 } from '../containers/Invoice/selectors';
-
-const { isArray } = Array;
 
 class CardItem extends Component {
   constructor(props) {
@@ -26,7 +23,6 @@ class CardItem extends Component {
     };
     this.flipCard = this.flipCard.bind(this);
     this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.deleteInvoice = this.deleteInvoice.bind(this);
   }
   componentWillReceiveProps({ error, success }) {
@@ -34,7 +30,7 @@ class CardItem extends Component {
     if (error) {
       actions.setModal(Modal, {
         componentProps: {
-          title: 'wassap',
+          title: error.message,
           open: true,
           onRequestClose: actions.unsetModal,
           error
@@ -44,7 +40,10 @@ class CardItem extends Component {
     }
     if (success.status === 204) {
       actions.unsetModal();
-      actions.push('/');
+      actions.apiRequest({
+        method: 'get',
+        url: '/v1/invoice'
+      });
     }
   }
 
@@ -109,9 +108,7 @@ class CardItem extends Component {
       dealer = '',
       vin = '',
       year = '',
-      notes = '',
-      openModal,
-      id
+      notes = ''
     } = this.props;
     const { flipped, icon, card } = this.state;
     return (
