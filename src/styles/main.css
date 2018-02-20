@@ -3,4 +3,8 @@ body {
   font-family: 'Roboto', sans-serif;
   /* text-align: center; */
 }
+
+.center {
+  text-align: center;
+}
 /*  */

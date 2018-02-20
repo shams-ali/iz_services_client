@@ -10,9 +10,10 @@ import {
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
-import { find, capitalize, map, maxBy, size } from 'lodash';
+import { find, capitalize, map, maxBy, size, isEqual } from 'lodash';
 import Form from './Form';
-
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ActionDone from 'material-ui/svg-icons/action/done';
 const styles = {
   propContainer: {
     width: 200,
@@ -39,8 +40,9 @@ export default class TableExampleComplex extends Component {
       multiSelectable: false,
       enableSelectAll: false,
       deselectOnClickaway: true,
-      showCheckboxes: true,
-      height: '300px'
+      showCheckboxes: false,
+      height: '300px',
+      editCell: { row: null, m: { target: {} }, col: null }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -58,7 +60,9 @@ export default class TableExampleComplex extends Component {
 
   render() {
     const { mainFields, forms } = this.props;
+    const { editCell } = this.state;
     console.log(mainFields, 'this is mainFields');
+    console.log('editcell', editCell);
     return (
       <div>
         {map(mainFields, (items, mainField) => {
@@ -72,6 +76,9 @@ export default class TableExampleComplex extends Component {
                 fixedFooter={this.state.fixedFooter}
                 selectable={this.state.selectable}
                 multiSelectable={this.state.multiSelectable}
+                onCellClick={(row, col, m) =>
+                  this.setState({ editCell: { row, col, mainField } })
+                }
               >
                 <TableHeader
                   displaySelectAll={this.state.showCheckboxes}
@@ -103,8 +110,25 @@ export default class TableExampleComplex extends Component {
                 >
                   {items.map((item, index) => (
                     <TableRow key={index}>
-                      {map(item, (v, k) => (
-                        <TableRowColumn key={k}>{v}</TableRowColumn>
+                      {Object.keys(item).map((k, col) => (
+                        <TableRowColumn key={k}>
+                          {isEqual(index, editCell.row) &&
+                          isEqual(mainField, editCell.mainField) &&
+                          isEqual(col, editCell.col) ? (
+                            <form>
+                              <FloatingActionButton mini type="button">
+                                <ActionDone />
+                              </FloatingActionButton>
+                              <TextField
+                                floatingLabelText={k}
+                                defaultValue={item[k]}
+                                onChange={this.handleChange}
+                              />
+                            </form>
+                          ) : (
+                            item[k]
+                          )}
+                        </TableRowColumn>
                       ))}
                     </TableRow>
                   ))}

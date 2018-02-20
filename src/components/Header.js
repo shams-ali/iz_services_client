@@ -18,7 +18,7 @@ const Header = ({ auth }) => (
       </Link>
     }
     iconElementRight={
-      auth ? (
+      !auth ? (
         <IconMenu
           iconButtonElement={
             <IconButton>
@@ -28,7 +28,7 @@ const Header = ({ auth }) => (
           targetOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-          <MenuItem primaryText="WalkIn Application" href="/invoice" />
+          <MenuItem primaryText="WalkIn Application" href="/invoice/new" />
           <MenuItem primaryText="Sign out" />
         </IconMenu>
       ) : (

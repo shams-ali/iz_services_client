@@ -21,7 +21,7 @@ class CardContainer extends Component {
     const { searchTerm } = this.state;
     return (
       <section className="card-container">
-        <div className="page-header">
+        <div className="page-header .center">
           <SearchInput className="search-input" onChange={this.searchUpdated} />
         </div>
         <div className="row active-with-click">
