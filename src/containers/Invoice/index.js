@@ -55,6 +55,7 @@ class Invoice extends Component {
       console.log(invoices, id);
       return (
         <Table
+          forms={forms}
           mainFields={pick(find(invoices, { _id: id }), ['fee', 'payment'])}
           {...rest}
         />

@@ -11,6 +11,7 @@ import validate from './Validate';
 import MenuItem from 'material-ui/MenuItem';
 
 const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
+  console.log(fields, 'this is fields');
   return (
     <form onSubmit={handleSubmit}>
       {['fee', 'payment'].includes(formName) ? (

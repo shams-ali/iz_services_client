@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Table,
   TableBody,
-  TableFooter,
+  // TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
@@ -10,7 +10,8 @@ import {
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
-import { capitalize, map, maxBy, size } from 'lodash';
+import { find, capitalize, map, maxBy, size } from 'lodash';
+import Form from './Form';
 
 const styles = {
   propContainer: {
@@ -22,37 +23,6 @@ const styles = {
     margin: '20px auto 10px'
   }
 };
-
-const tableData = [
-  {
-    name: 'John Smith',
-    status: 'Employed'
-  },
-  {
-    name: 'Randal White',
-    status: 'Unemployed'
-  },
-  {
-    name: 'Stephanie Sanders',
-    status: 'Employed'
-  },
-  {
-    name: 'Steve Brown',
-    status: 'Employed'
-  },
-  {
-    name: 'Joyce Whitten',
-    status: 'Employed'
-  },
-  {
-    name: 'Samuel Roberts',
-    status: 'Employed'
-  },
-  {
-    name: 'Adam Moore',
-    status: 'Employed'
-  }
-];
 
 /**
  * A more complex example, allowing the table height to be set, and key boolean properties to be toggled.
@@ -87,7 +57,7 @@ export default class TableExampleComplex extends Component {
   }
 
   render() {
-    const { mainFields } = this.props;
+    const { mainFields, forms } = this.props;
     console.log(mainFields, 'this is mainFields');
     return (
       <div>
@@ -95,51 +65,51 @@ export default class TableExampleComplex extends Component {
           const largestItem = maxBy(items, Item => size(Item));
           console.log(largestItem, 'this is largets fiels');
           return (
-            <Table
-              height={this.state.height}
-              fixedHeader={this.state.fixedHeader}
-              fixedFooter={this.state.fixedFooter}
-              selectable={this.state.selectable}
-              multiSelectable={this.state.multiSelectable}
-              key={mainField}
-            >
-              <TableHeader
-                displaySelectAll={this.state.showCheckboxes}
-                adjustForCheckbox={this.state.showCheckboxes}
-                enableSelectAll={this.state.enableSelectAll}
+            <div key={mainField}>
+              <Table
+                height={this.state.height}
+                fixedHeader={this.state.fixedHeader}
+                fixedFooter={this.state.fixedFooter}
+                selectable={this.state.selectable}
+                multiSelectable={this.state.multiSelectable}
               >
-                <TableRow>
-                  <TableHeaderColumn
-                    colSpan={size(largestItem)}
-                    tooltip="Super Header"
-                    style={{ textAlign: 'center' }}
-                  >
-                    {capitalize(mainField)}
-                  </TableHeaderColumn>
-                </TableRow>
-                <TableRow>
-                  {map(largestItem, (_, k) => (
-                    <TableHeaderColumn key={k} tooltip={k}>
-                      {k}
+                <TableHeader
+                  displaySelectAll={this.state.showCheckboxes}
+                  adjustForCheckbox={this.state.showCheckboxes}
+                  enableSelectAll={this.state.enableSelectAll}
+                >
+                  <TableRow>
+                    <TableHeaderColumn
+                      colSpan={size(largestItem)}
+                      tooltip="Super Header"
+                      style={{ textAlign: 'center' }}
+                    >
+                      {capitalize(mainField)}
                     </TableHeaderColumn>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody
-                displayRowCheckbox={this.state.showCheckboxes}
-                deselectOnClickaway={this.state.deselectOnClickaway}
-                showRowHover={this.state.showRowHover}
-                stripedRows={this.state.stripedRows}
-              >
-                {items.map((item, index) => (
-                  <TableRow key={index}>
-                    {map(item, (v, k) => (
-                      <TableRowColumn key={k}>{v}</TableRowColumn>
+                  </TableRow>
+                  <TableRow>
+                    {map(largestItem, (_, k) => (
+                      <TableHeaderColumn key={k} tooltip={k}>
+                        {k}
+                      </TableHeaderColumn>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-              {/* Add a footer here if we want <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
+                </TableHeader>
+                <TableBody
+                  displayRowCheckbox={this.state.showCheckboxes}
+                  deselectOnClickaway={this.state.deselectOnClickaway}
+                  showRowHover={this.state.showRowHover}
+                  stripedRows={this.state.stripedRows}
+                >
+                  {items.map((item, index) => (
+                    <TableRow key={index}>
+                      {map(item, (v, k) => (
+                        <TableRowColumn key={k}>{v}</TableRowColumn>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+                {/* Add a footer here if we want <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
                 <TableRow>
                   {map(largestItem, (_, k) => (
                     <TableRowColumn key={k}>{k}</TableRowColumn>
@@ -153,8 +123,16 @@ export default class TableExampleComplex extends Component {
                     {capitalize(mainField)}
                   </TableRowColumn>
                 </TableRow>
-              </TableFooter> */}
-            </Table>
+                </TableFooter> */}
+              </Table>
+              <Form
+                onSubmit={() => console.log('hello world')}
+                formName={mainField}
+                fields={find(forms, ['name', mainField]).fields}
+                lastPage={true}
+                key={mainField}
+              />
+            </div>
           );
         })}
 
