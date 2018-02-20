@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
 import CardItem from './cardItem';
 import {
-  selectApiRequestSuccess,
-  selectApiRequestError
+  selectApiRequestInvoices,
+  selectApiRequestError,
+  selectApiRequestSuccess
 } from '../containers/Invoice/selectors';
 import { apiRequest } from '../containers/Invoice/actions';
 
 const filterBy = ['case_status', 'case_type', 'vin', 'name'];
-
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +33,7 @@ class Search extends Component {
   render() {
     const { invoices } = this.props;
     const { searchTerm } = this.state;
-
+    console.log(invoices);
     return (
       <section className="container">
         <div className="page-header">
@@ -54,7 +52,8 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
-  invoices: selectApiRequestSuccess(state),
+  invoices: selectApiRequestInvoices(state),
+  success: selectApiRequestSuccess(state),
   error: selectApiRequestError(state)
 });
 

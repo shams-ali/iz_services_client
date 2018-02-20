@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import { setModal, unsetModal } from 'react-redux-dialog';
 import _ from 'lodash';
 import { List, ListItem } from 'material-ui/List';
+import FlatButton from 'material-ui/FlatButton';
+import Modal from './modal';
 
-class cardItem extends Component {
+import { apiRequest } from '../containers/Invoice/actions';
+import {
+  selectApiRequestSuccess,
+  selectApiRequestError
+} from '../containers/Invoice/selectors';
+
+const { isArray } = Array;
+
+class CardItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,11 +25,31 @@ class cardItem extends Component {
       card: ['material-card', 'Red']
     };
     this.flipCard = this.flipCard.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.deleteInvoice = this.deleteInvoice.bind(this);
+  }
+  componentWillReceiveProps({ error, success }) {
+    console.log(success, 'this is success');
+    const { actions } = this.props;
+    if (error) {
+      actions.setModal(Modal, {
+        componentProps: {
+          title: 'wassap',
+          open: true,
+          onRequestClose: actions.unsetModal,
+          error
+        },
+        modalProps: { isOpen: true }
+      });
+    }
+    if (success && !isArray(success)) {
+      actions.unsetModal();
+      actions.push('/');
+    }
   }
 
   flipCard() {
-    console.log('flipping card');
-    console.log('this.id', this.props.id);
     const { icon, flipped, card } = this.state;
     this.setState({ icon: icon.concat('fa-spin-fast') });
     if (flipped) {
@@ -47,9 +81,44 @@ class cardItem extends Component {
     this.setState({ flipped: !flipped });
   }
 
+  openModal() {
+    const { actions } = this.props;
+    actions.setModal(Modal, {
+      componentProps: {
+        title: 'Confirm',
+        open: true,
+        onRequestClose: actions.unsetModal,
+        handleSubmit: this.deleteInvoice,
+        type: 'confirm',
+        confirm: 'Are You sure You Want To Delete This Invoice?'
+      },
+      modalProps: { isOpen: true }
+    });
+  }
+
+  deleteInvoice() {
+    const { actions, id } = this.props;
+    actions.apiRequest({
+      method: 'delete',
+      url: `v1/invoices/${id}`
+    });
+  }
+
+  closeModal() {
+    const { actions } = this.props;
+    actions.unsetModal();
+  }
+
   render() {
-    const { name, dealer, vin, year, notes = 'No Notes' } = this.props;
-    console.log('this.props', this.props);
+    const {
+      name = '',
+      dealer = '',
+      vin = '',
+      year = '',
+      notes = '',
+      openModal,
+      id
+    } = this.props;
     const { flipped, icon, card } = this.state;
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -68,7 +137,7 @@ class cardItem extends Component {
                 <ListItem primaryText={`Balance: 100$`} />
               </List>
             )}
-            <div className="mc-description">{notes}</div>
+            <div className="mc-description">{`Notes: ${notes}`}</div>
           </div>
           <button onClick={this.flipCard} className="mc-btn-action">
             <i className={icon.join(' ')} />
@@ -78,12 +147,23 @@ class cardItem extends Component {
             <a className="fas fa-fw fa-check" />
             <a className="fas fa-fw fa-edit" />
             <a className="fas fa-fw fa-print" />
-            <a className="fas fa-fw fa-trash" />
+            <a className="fas fa-fw fa-trash" onClick={this.openModal} />
           </div>
         </article>
       </div>
     );
   }
 }
+const mapStateToProps = state => ({
+  success: selectApiRequestSuccess(state),
+  error: selectApiRequestError(state)
+});
 
-export default cardItem;
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(
+    { apiRequest, setModal, unsetModal, push },
+    dispatch
+  )
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardItem);
