@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { first } from 'lodash';
 import CardItem from '../../components/cardItem';
-import { selectApiRequestError } from '../../containers/Invoice/selectors';
-import { apiRequest } from '../../containers/Invoice/actions';
 
 class CardContainer extends Component {
   constructor(props) {
@@ -16,7 +11,6 @@ class CardContainer extends Component {
     this.searchUpdated = this.searchUpdated.bind(this);
   }
   componentDidMount() {
-    console.log(this.props);
     const { type, actions } = this.props;
     actions.apiRequest({
       method: 'get',
@@ -29,7 +23,7 @@ class CardContainer extends Component {
   }
 
   render() {
-    const { items, filterBy } = this.props;
+    const { items, filterBy, ...rest } = this.props;
     const { searchTerm } = this.state;
     return (
       <section className="container">
@@ -39,8 +33,8 @@ class CardContainer extends Component {
         <div className="row active-with-click">
           {items
             .filter(createFilter(searchTerm, filterBy))
-            .map(({ _id, ...props }) => (
-              <CardItem key={_id} id={_id} {...props} />
+            .map(({ _id, ...itemValues }) => (
+              <CardItem key={_id} id={_id} {...itemValues} {...rest} />
             ))}
         </div>
       </section>
@@ -48,12 +42,4 @@ class CardContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  error: selectApiRequestError(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ apiRequest }, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
+export default CardContainer;

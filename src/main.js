@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { history } from './store';
-import Layout from './containers/Layout';
+import Layout from './layout';
 import Login from './containers/Login';
 import Home from './containers/Home';
 import Invoice from './containers/Invoice';
@@ -13,7 +13,7 @@ const Routes = () => (
       <Layout>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
-        <Route path="/invoice" component={Invoice} />
+        <Route exact path="/invoice" component={Invoice} />
         <Route path="/invoice/:id" component={Invoice} />
       </Layout>
     </Switch>

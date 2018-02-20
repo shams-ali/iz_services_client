@@ -1,17 +1,7 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { setModal, unsetModal } from 'react-redux-dialog';
 import _ from 'lodash';
 import { List, ListItem } from 'material-ui/List';
 import Modal from './modal';
-
-import { apiRequest } from '../containers/Invoice/actions';
-import {
-  selectApiRequestSuccess,
-  selectApiRequestError
-} from '../containers/Invoice/selectors';
 
 class CardItem extends Component {
   constructor(props) {
@@ -24,27 +14,6 @@ class CardItem extends Component {
     this.flipCard = this.flipCard.bind(this);
     this.openModal = this.openModal.bind(this);
     this.deleteInvoice = this.deleteInvoice.bind(this);
-  }
-  componentWillReceiveProps({ error, success }) {
-    const { actions } = this.props;
-    if (error) {
-      actions.setModal(Modal, {
-        componentProps: {
-          title: error.message,
-          open: true,
-          onRequestClose: actions.unsetModal,
-          error
-        },
-        modalProps: { isOpen: true }
-      });
-    }
-    if (success.status === 204) {
-      actions.unsetModal();
-      actions.apiRequest({
-        method: 'get',
-        url: '/v1/invoice'
-      });
-    }
   }
 
   flipCard() {
@@ -139,16 +108,5 @@ class CardItem extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  success: selectApiRequestSuccess(state),
-  error: selectApiRequestError(state)
-});
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    { apiRequest, setModal, unsetModal, push },
-    dispatch
-  )
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardItem);
+export default CardItem;
