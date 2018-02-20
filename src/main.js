@@ -12,8 +12,9 @@ const Routes = () => (
     <Switch>
       <Layout>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
+        <Route path="/login" component={Login} />
         <Route path="/invoice" component={Invoice} />
+        <Route path="/invoice/:id" component={Invoice} />
       </Layout>
     </Switch>
   </ConnectedRouter>

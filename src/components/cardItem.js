@@ -103,13 +103,7 @@ class CardItem extends Component {
   }
 
   render() {
-    const {
-      name = '',
-      dealer = '',
-      vin = '',
-      year = '',
-      notes = ''
-    } = this.props;
+    const { name, make, dealer, vin, model_year, notes, comments } = this.props;
     const { flipped, icon, card } = this.state;
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -118,7 +112,7 @@ class CardItem extends Component {
             <span>{vin}</span>
             <strong>
               <i className="fa fa-fw fa-star" />
-              {year}
+              {`${make} ${model_year}`}
             </strong>
           </h2>
           <div className="mc-content">
@@ -128,7 +122,7 @@ class CardItem extends Component {
                 <ListItem primaryText={`Balance: 100$`} />
               </List>
             )}
-            <div className="mc-description">{`Notes: ${notes}`}</div>
+            <div className="mc-description">{`Comments: ${comments}`}</div>
           </div>
           <button onClick={this.flipCard} className="mc-btn-action">
             <i className={icon.join(' ')} />

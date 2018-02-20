@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import SearchInput, { createFilter } from 'react-search-input';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import CardItem from './cardItem';
-import {
-  selectApiRequestInvoices,
-  selectApiRequestError
-} from '../containers/Invoice/selectors';
-import { apiRequest } from '../containers/Invoice/actions';
+import { first } from 'lodash';
+import CardItem from '../../components/cardItem';
+import { selectApiRequestError } from '../../containers/Invoice/selectors';
+import { apiRequest } from '../../containers/Invoice/actions';
 
-const filterBy = ['case_status', 'case_type', 'vin', 'name'];
-class Search extends Component {
+class CardContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,9 +16,11 @@ class Search extends Component {
     this.searchUpdated = this.searchUpdated.bind(this);
   }
   componentDidMount() {
-    this.props.actions.apiRequest({
+    console.log(this.props);
+    const { type, actions } = this.props;
+    actions.apiRequest({
       method: 'get',
-      url: '/v1/invoice'
+      url: `/v1/${type}`
     });
   }
 
@@ -30,16 +29,15 @@ class Search extends Component {
   }
 
   render() {
-    const { invoices } = this.props;
+    const { items, filterBy } = this.props;
     const { searchTerm } = this.state;
-    console.log(invoices);
     return (
       <section className="container">
         <div className="page-header">
           <SearchInput className="search-input" onChange={this.searchUpdated} />
         </div>
         <div className="row active-with-click">
-          {invoices
+          {items
             .filter(createFilter(searchTerm, filterBy))
             .map(({ _id, ...props }) => (
               <CardItem key={_id} id={_id} {...props} />
@@ -51,7 +49,6 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
-  invoices: selectApiRequestInvoices(state),
   error: selectApiRequestError(state)
 });
 
@@ -59,4 +56,4 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ apiRequest }, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);

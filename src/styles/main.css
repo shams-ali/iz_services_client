@@ -205,6 +205,7 @@ body {
   line-height: 52px;
   text-decoration: none;
   top: 200px;
+  cursor: cell;
 }
 
 .material-card .mc-footer a:nth-child(1) {

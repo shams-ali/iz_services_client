@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "admin-on-rest": "^1.4.0",
     "axios": "^0.17.1",
     "bootstrap": "3",
     "flow-bin": "^0.64.0",
