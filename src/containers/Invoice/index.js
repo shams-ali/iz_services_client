@@ -24,7 +24,7 @@ class Invoice extends Component {
   }
 
   componentWillReceiveProps({ success, error }) {
-    const { actions } = this.props;
+    const { actions, match } = this.props;
     if (error) {
       actions.setModal(Modal, {
         componentProps: {
@@ -43,7 +43,9 @@ class Invoice extends Component {
         method: 'get',
         url: '/v1/invoice'
       });
-      actions.push('/invoice');
+      if (match.params.id) {
+        actions.push('/invoice');
+      }
     }
   }
 
