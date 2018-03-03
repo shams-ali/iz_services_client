@@ -2,19 +2,18 @@ import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { capitalize } from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
+import MenuItem from 'material-ui/MenuItem';
 import {
   renderTextField,
   renderFieldArray,
   renderSelectField
 } from './formElements';
 import validate from './Validate';
-import MenuItem from 'material-ui/MenuItem';
 
 const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
-  console.log(fields, 'this is fields');
   return (
     <form onSubmit={handleSubmit}>
-      {['fee', 'payment'].includes(formName) ? (
+      {['fees', 'payments'].includes(formName) ? (
         <FieldArray
           name={formName}
           formName={formName}
@@ -22,22 +21,20 @@ const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
           component={renderFieldArray}
         />
       ) : (
-        fields.map(({ type = 'text', name, select, ...props }) => (
+        fields.map(({ type = 'text', name, select }) => (
           <div key={name}>
             {select ? (
               <Field
-                {...props}
                 name={name}
                 component={renderSelectField}
                 label={capitalize(name)}
               >
-                {select.map(value => (
-                  <MenuItem value={value} primaryText={value} />
+                {select.map(menuItem => (
+                  <MenuItem value={menuItem} primaryText={menuItem} />
                 ))}
               </Field>
             ) : (
               <Field
-                {...props}
                 name={name}
                 type={type}
                 component={renderTextField}

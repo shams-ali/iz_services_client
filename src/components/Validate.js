@@ -1,7 +1,8 @@
 const { assign } = Object;
-const required = ['vin', 'model_year'];
+const required = ['vin', 'model_year', 'vehicle_tax'];
 
 const validate = values => {
+  console.log('valueeeeeeesssss', values);
   const { email, zip, year } = values;
 
   const errors = {};

@@ -10,10 +10,11 @@ import {
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
-import { find, capitalize, map, maxBy, size, isEqual } from 'lodash';
-import Form from './Form';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ActionDone from 'material-ui/svg-icons/action/done';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { find, capitalize, map, maxBy, size, omit, identity } from 'lodash';
+import InitializeFromStateForm from './InitializeFromStateForm';
+
 const styles = {
   propContainer: {
     width: 200,
@@ -41,11 +42,62 @@ export default class TableExampleComplex extends Component {
       enableSelectAll: false,
       deselectOnClickaway: true,
       showCheckboxes: false,
-      height: '300px',
-      editCell: { row: null, m: { target: {} }, col: null }
+      height: '300px'
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.handleEditItem = this.handleEditItem.bind(this);
+    this.handleCreateItem = this.handleCreateItem.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
+  }
+
+  openModal(mainField, item, onSubmit, handleDeleteItem = identity) {
+    const { actions, forms } = this.props;
+    actions.setEditFields(item);
+    actions.setModal(InitializeFromStateForm, {
+      componentProps: {
+        fields: find(forms, ['name', mainField]).fields,
+        onSubmit: onSubmit(mainField),
+        actions,
+        deleteItem: handleDeleteItem(mainField)
+      },
+      modalProps: { isOpen: true }
+    });
+  }
+
+  handleEditItem(type) {
+    const { actions } = this.props;
+    return ({ _id, ...body }) => {
+      actions.apiRequest({
+        method: 'put',
+        url: `/v1/invoice/${_id}?type=${type}`,
+        data: body
+      });
+    };
+  }
+
+  handleCreateItem(type) {
+    const { actions, invoice: { _id } } = this.props;
+    return data => {
+      actions.apiRequest({
+        method: 'put',
+        url: `/v1/invoice/${_id}?type=${type}&kind=new`,
+        data
+      });
+    };
+  }
+
+  handleDeleteItem(type) {
+    const { actions, invoice: { _id } } = this.props;
+    console.log('delete item');
+    return ({ _id: deleteUid }) => {
+      console.log(deleteUid, 'this is data');
+      actions.apiRequest({
+        method: 'put',
+        url: `/v1/invoice/${_id}?type=${type}&deleteUid=${deleteUid}`
+      });
+    };
   }
 
   handleToggle(event, toggled) {
@@ -59,15 +111,11 @@ export default class TableExampleComplex extends Component {
   }
 
   render() {
-    const { mainFields, forms } = this.props;
-    const { editCell } = this.state;
-    console.log(mainFields, 'this is mainFields');
-    console.log('editcell', editCell);
+    const { mainFields, forms, invoice } = this.props;
     return (
       <div>
         {map(mainFields, (items, mainField) => {
           const largestItem = maxBy(items, Item => size(Item));
-          console.log(largestItem, 'this is largets fiels');
           return (
             <div key={mainField}>
               <Table
@@ -76,8 +124,13 @@ export default class TableExampleComplex extends Component {
                 fixedFooter={this.state.fixedFooter}
                 selectable={this.state.selectable}
                 multiSelectable={this.state.multiSelectable}
-                onCellClick={(row, col, m) =>
-                  this.setState({ editCell: { row, col, mainField } })
+                onCellClick={row =>
+                  this.openModal(
+                    mainField,
+                    items[row],
+                    this.handleEditItem,
+                    this.handleDeleteItem
+                  )
                 }
               >
                 <TableHeader
@@ -87,7 +140,7 @@ export default class TableExampleComplex extends Component {
                 >
                   <TableRow>
                     <TableHeaderColumn
-                      colSpan={size(largestItem)}
+                      colSpan={size(omit(largestItem, ['_id']))}
                       tooltip="Super Header"
                       style={{ textAlign: 'center' }}
                     >
@@ -95,7 +148,7 @@ export default class TableExampleComplex extends Component {
                     </TableHeaderColumn>
                   </TableRow>
                   <TableRow>
-                    {map(largestItem, (_, k) => (
+                    {map(omit(largestItem, ['_id']), (_, k) => (
                       <TableHeaderColumn key={k} tooltip={k}>
                         {k}
                       </TableHeaderColumn>
@@ -108,30 +161,15 @@ export default class TableExampleComplex extends Component {
                   showRowHover={this.state.showRowHover}
                   stripedRows={this.state.stripedRows}
                 >
-                  {items.map((item, index) => (
-                    <TableRow key={index}>
-                      {Object.keys(item).map((k, col) => (
-                        <TableRowColumn key={k}>
-                          {isEqual(index, editCell.row) &&
-                          isEqual(mainField, editCell.mainField) &&
-                          isEqual(col, editCell.col) ? (
-                            <form>
-                              <FloatingActionButton mini type="button">
-                                <ActionDone />
-                              </FloatingActionButton>
-                              <TextField
-                                floatingLabelText={k}
-                                defaultValue={item[k]}
-                                onChange={this.handleChange}
-                              />
-                            </form>
-                          ) : (
-                            item[k]
-                          )}
-                        </TableRowColumn>
-                      ))}
-                    </TableRow>
-                  ))}
+                  {items.map(item => {
+                    return (
+                      <TableRow key={item['_id']}>
+                        {map(omit(item, ['_id']), (v, k) => (
+                          <TableRowColumn key={k}>{v}</TableRowColumn>
+                        ))}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
                 {/* Add a footer here if we want <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
                 <TableRow>
@@ -149,13 +187,14 @@ export default class TableExampleComplex extends Component {
                 </TableRow>
                 </TableFooter> */}
               </Table>
-              <Form
-                onSubmit={() => console.log('hello world')}
-                formName={mainField}
-                fields={find(forms, ['name', mainField]).fields}
-                lastPage={true}
-                key={mainField}
-              />
+              <FloatingActionButton
+                type="button"
+                onClick={() =>
+                  this.openModal(mainField, {}, this.handleCreateItem)
+                }
+              >
+                <ContentAdd />
+              </FloatingActionButton>
             </div>
           );
         })}

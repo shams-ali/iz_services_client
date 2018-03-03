@@ -18,8 +18,8 @@ function* apiRequest({ config }) {
   }
 }
 
-function* invoice() {
+function* invoiceSagas() {
   yield takeLatest(API_REQUEST, apiRequest);
 }
 
-export default invoice;
+export default invoiceSagas;

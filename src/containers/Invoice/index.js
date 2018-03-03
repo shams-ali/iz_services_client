@@ -13,13 +13,16 @@ import Modal from '../../components/modal';
 import {
   selectApiRequestInvoices,
   selectApiRequestSuccess,
-  selectApiRequestError
+  selectApiRequestError,
+  selectInvoice,
+  selectEditFields
 } from './selectors';
-import { apiRequest } from './actions';
+import { apiRequest, setInvoice, setEditFields } from './actions';
 
 class Invoice extends Component {
   componentDidMount() {
     const { actions } = this.props;
+    actions.unsetModal();
     actions.apiRequest({ method: 'get', url: `/v1/invoice` });
   }
 
@@ -36,35 +39,43 @@ class Invoice extends Component {
         modalProps: { isOpen: true }
       });
     }
-    if ([201, 204].includes(success.status)) {
-      console.log('this is status', success.status);
+    if ([201, 202, 204].includes(success.status)) {
       actions.unsetModal();
+      if (match.params.id === 'new') {
+        actions.push('/invoice');
+      }
       actions.apiRequest({
         method: 'get',
         url: '/v1/invoice'
       });
-      if (match.params.id) {
-        actions.push('/invoice');
-      }
     }
   }
 
   render() {
-    const { match: { params: { id } }, invoices, ...rest } = this.props;
+    const {
+      match: { params: { id } },
+      invoices,
+      actions,
+      invoice,
+      ...rest
+    } = this.props;
     if (id === 'new') {
-      return <WizardForm forms={forms} {...rest} />;
+      return <WizardForm forms={forms} actions={actions} {...rest} />;
     } else if (id) {
-      console.log(invoices, id);
+      actions.setInvoice(find(invoices, { _id: id }));
       return (
         <Table
           forms={forms}
-          mainFields={pick(find(invoices, { _id: id }), ['fee', 'payment'])}
+          actions={actions}
+          mainFields={pick(invoice, ['fees', 'payments'])}
+          invoice={invoice}
           {...rest}
         />
       );
     }
     return (
       <Card
+        actions={actions}
         items={invoices}
         filterBy={['case_status', 'case_type', 'vin', 'name']}
         {...rest}
@@ -75,13 +86,15 @@ class Invoice extends Component {
 
 const mapStateToProps = state => ({
   invoices: selectApiRequestInvoices(state),
+  editFields: selectEditFields(state),
+  invoice: selectInvoice(state),
   success: selectApiRequestSuccess(state),
   error: selectApiRequestError(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
-    { setModal, unsetModal, apiRequest, push },
+    { setModal, unsetModal, apiRequest, setEditFields, setInvoice, push },
     dispatch
   )
 });

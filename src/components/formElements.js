@@ -14,10 +14,12 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 export const renderTextField = ({
   input,
   label,
+  value,
   meta: { touched, error },
   ...custom
 }) => (
   <TextField
+    value={value}
     hintText={label}
     floatingLabelText={label}
     errorText={touched && error}

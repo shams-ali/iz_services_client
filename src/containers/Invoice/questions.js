@@ -28,7 +28,7 @@ const forms = [
     ]
   },
   {
-    name: 'fee',
+    name: 'fees',
     fields: [
       { name: 'dmv_fee', type: 'number' },
       { name: 'service_fee', type: 'number' },
@@ -42,7 +42,7 @@ const forms = [
     ]
   },
   {
-    name: 'payment',
+    name: 'payments',
     fields: [
       { name: 'type', select: ['cash', 'credit', 'check'] },
       { name: 'amount', type: 'number' }

@@ -12,3 +12,10 @@ export const selectApiRequestError = state =>
 
 export const selectApiRequestLoading = state =>
   selectInvoiceContainer(state).get('apiRequestLoading');
+
+export const selectInvoice = state =>
+  selectInvoiceContainer(state).get('invoice');
+
+export const selectEditFields = state => {
+  return selectInvoiceContainer(state).get('editFields');
+};
