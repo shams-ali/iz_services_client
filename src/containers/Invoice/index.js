@@ -77,6 +77,7 @@ class Invoice extends Component {
       <Card
         actions={actions}
         items={invoices}
+        forms={forms}
         filterBy={['case_status', 'case_type', 'vin', 'name']}
         {...rest}
       />

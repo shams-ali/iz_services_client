@@ -27,8 +27,12 @@ class CardContainer extends Component {
         <div className="row active-with-click">
           {items
             .filter(createFilter(searchTerm, filterBy))
-            .map(({ _id, ...itemValues }) => (
-              <CardItem key={_id} id={_id} {...itemValues} {...rest} />
+            .map(itemValues => (
+              <CardItem
+                key={itemValues._id}
+                itemValues={itemValues}
+                {...rest}
+              />
             ))}
         </div>
       </section>

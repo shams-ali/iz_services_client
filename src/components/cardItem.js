@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { without, omit } from 'lodash';
 import { List, ListItem } from 'material-ui/List';
 import Modal from './modal';
+import InitializeFromStateForm from './InitializeFromStateForm';
 
+const { assign } = Object;
 class CardItem extends Component {
   constructor(props) {
     super(props);
@@ -13,19 +15,21 @@ class CardItem extends Component {
     };
     this.flipCard = this.flipCard.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.openEditModal = this.openEditModal.bind(this);
     this.deleteInvoice = this.deleteInvoice.bind(this);
+    this.handleEditItem = this.handleEditItem.bind(this);
   }
 
   flipCard() {
     const { icon, flipped, card } = this.state;
     this.setState({ icon: icon.concat('fa-spin-fast') });
     if (flipped) {
-      this.setState({ card: _.without(card, 'mc-active') });
+      this.setState({ card: without(card, 'mc-active') });
 
       window.setTimeout(
         () =>
           this.setState({
-            icon: _.without(icon, 'fa-arrow-left', 'fa-spin-fast').concat(
+            icon: without(icon, 'fa-arrow-left', 'fa-spin-fast').concat(
               'fa-bars'
             )
           }),
@@ -37,7 +41,7 @@ class CardItem extends Component {
       window.setTimeout(
         () =>
           this.setState({
-            icon: _.without(icon, 'fa-bars', 'fa-spin-fast').concat(
+            icon: without(icon, 'fa-bars', 'fa-spin-fast').concat(
               'fa-arrow-left'
             )
           }),
@@ -63,8 +67,34 @@ class CardItem extends Component {
     });
   }
 
+  handleEditItem({ _id, ...body }) {
+    const { actions } = this.props;
+    actions.apiRequest({
+      method: 'put',
+      url: `/v1/invoice/${_id}?type=invoice`,
+      data: body
+    });
+  }
+
+  openEditModal() {
+    const { itemValues } = this.props;
+    const {
+      actions,
+      forms: [{ fields: clientFields }, { fields: vehicleFields }]
+    } = this.props;
+    actions.setEditFields(omit(itemValues, ['fees', 'payments']));
+    actions.setModal(InitializeFromStateForm, {
+      componentProps: {
+        fields: assign(clientFields, vehicleFields),
+        onSubmit: this.handleEditItem,
+        actions
+      },
+      modalProps: { isOpen: true }
+    });
+  }
+
   deleteInvoice() {
-    const { actions, id } = this.props;
+    const { actions, itemValues: { _id: id } } = this.props;
     actions.apiRequest({
       method: 'delete',
       url: `v1/invoice/${id}`
@@ -72,7 +102,9 @@ class CardItem extends Component {
   }
 
   render() {
-    const { name, make, dealer, vin, model_year, comments, id } = this.props;
+    const {
+      itemValues: { name, make, dealer, vin, model_year, comments, _id: id }
+    } = this.props;
     const { flipped, icon, card } = this.state;
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -99,7 +131,7 @@ class CardItem extends Component {
           <div className="mc-footer">
             {flipped && <h4>Action Items</h4>}
             <a className="fas fa-fw fa-check" href={`/invoice/${id}`} />
-            <a className="fas fa-fw fa-edit" />
+            <a className="fas fa-fw fa-edit" onClick={this.openEditModal} />
             <a className="fas fa-fw fa-print" />
             <a className="fas fa-fw fa-trash" onClick={this.openModal} />
           </div>
