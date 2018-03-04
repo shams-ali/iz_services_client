@@ -65,7 +65,9 @@ export default class TableExampleComplex extends Component {
         actions,
         deleteItem: handleDeleteItem(mainField)
       },
-      modalProps: { isOpen: true }
+      modalProps: {
+        isOpen: true
+      }
     });
   }
 
@@ -116,7 +118,9 @@ export default class TableExampleComplex extends Component {
                 reduce(
                   omit(item, ['_id']),
                   (subTotals, v, k) =>
-                    assign(subTotals, { [k]: totals[k] + v || v }),
+                    assign(subTotals, {
+                      [k]: totals[k] + v || v
+                    }),
                   totals
                 )
               ),
@@ -146,7 +150,9 @@ export default class TableExampleComplex extends Component {
                     <TableHeaderColumn
                       colSpan={size(finalTotals)}
                       tooltip={mainField}
-                      style={{ textAlign: 'center' }}
+                      style={{
+                        textAlign: 'center'
+                      }}
                     >
                       {capitalize(mainField)}
                     </TableHeaderColumn>
@@ -168,22 +174,23 @@ export default class TableExampleComplex extends Component {
                   {items.map(({ _id: id, ...item }) => (
                     <TableRow key={id}>
                       {keys(finalTotals).map(key => (
-                        <TableRowColumn key={key}>{item[key]}</TableRowColumn>
+                        <TableRowColumn key={key}> {item[key]} </TableRowColumn>
                       ))}
                     </TableRow>
                   ))}
                 </TableBody>
-
-                <TableFooter>
+                <TableFooter className="table-footer">
                   <TableRow>
                     {map(finalTotals, (value, key) => (
-                      <TableRowColumn key={key}>{value}</TableRowColumn>
+                      <TableRowColumn key={key}> {value} </TableRowColumn>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableRowColumn
                       colSpan={size(finalTotals)}
-                      style={{ textAlign: 'center' }}
+                      style={{
+                        textAlign: 'center'
+                      }}
                     >
                       {`Total ${capitalize(mainField)}: ${totalDue}`}
                     </TableRowColumn>
