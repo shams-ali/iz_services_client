@@ -20,7 +20,7 @@ const enhancer = compose(
   applyMiddleware(...middlewares),
   reduxSearch({
     resourceIndexes: {
-      invoice: ['vin', 'name']
+      invoice: ['vin', 'name', 'dealer', 'phone']
     },
     resourceSelector: (resourceName, state) => state[resourceName]
   })

@@ -27,6 +27,7 @@ class Invoice extends Component {
   }
 
   componentWillReceiveProps({ success, error }) {
+    console.log(success.status, error);
     const { actions, match } = this.props;
     if (error) {
       actions.setModal(Modal, {
@@ -62,13 +63,12 @@ class Invoice extends Component {
     if (id === 'new') {
       return <WizardForm forms={forms} actions={actions} {...rest} />;
     } else if (id) {
-      actions.setInvoice(find(invoices, { _id: id }));
       return (
         <Table
           forms={forms}
           actions={actions}
-          mainFields={pick(invoice, ['fees', 'payments'])}
-          invoice={invoice}
+          mainFields={['fees', 'payments']}
+          invoice={find(invoices, { _id: id })}
           {...rest}
         />
       );
@@ -78,7 +78,14 @@ class Invoice extends Component {
         actions={actions}
         items={invoices}
         forms={forms}
-        filterBy={['case_status', 'case_type', 'vin', 'name']}
+        filterBy={[
+          'case_status',
+          'case_type',
+          'vin',
+          'name',
+          'dealer',
+          'phone'
+        ]}
         {...rest}
       />
     );
@@ -88,7 +95,6 @@ class Invoice extends Component {
 const mapStateToProps = state => ({
   invoices: selectApiRequestInvoices(state),
   editFields: selectEditFields(state),
-  invoice: selectInvoice(state),
   success: selectApiRequestSuccess(state),
   error: selectApiRequestError(state)
 });

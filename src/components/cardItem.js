@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { without, omit } from 'lodash';
 import { List, ListItem } from 'material-ui/List';
+import PropTypes from 'prop-types';
 import Modal from './modal';
 import InitializeFromStateForm from './InitializeFromStateForm';
 
@@ -103,24 +104,43 @@ class CardItem extends Component {
 
   render() {
     const {
-      itemValues: { name, make, dealer, vin, model_year, comments, _id: id }
+      itemValues: {
+        name,
+        make,
+        dealer,
+        vin,
+        model_year: modelYear,
+        phone,
+        comments,
+        case_type: caseType,
+        case_status: caseStatus,
+        _id: id
+      },
+      actions: { push }
     } = this.props;
     const { flipped, icon, card } = this.state;
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
         <article className={card.join(' ')}>
           <h2>
-            <span>{vin}</span>
+            <span>VIN: {vin}</span>
             <strong>
               <i className="fa fa-fw fa-star" />
-              {`${make} ${model_year}`}
+              {`${make} ${modelYear}`}
             </strong>
           </h2>
           <div className="mc-content">
             {!flipped && (
               <List>
-                <ListItem primaryText={`Customer: ${name || dealer}`} />
-                <ListItem primaryText={`Balance: 100$`} />
+                <ListItem primaryText={`Customer: ${name || dealer || ''}`} />
+                {phone && <ListItem primaryText={`Phone: ${phone}`} />}
+                <ListItem primaryText="Balance: 100$" />
+                {caseType && (
+                  <ListItem primaryText={`Case Type: ${caseType}`} />
+                )}
+                {caseStatus && (
+                  <ListItem primaryText={`Case Status: ${caseStatus}`} />
+                )}
               </List>
             )}
             <div className="mc-description">{`Comments: ${comments}`}</div>
@@ -130,15 +150,30 @@ class CardItem extends Component {
           </button>
           <div className="mc-footer">
             {flipped && <h4>Action Items</h4>}
-            <a className="fas fa-fw fa-check" href={`/invoice/${id}`} />
-            <a className="fas fa-fw fa-edit" onClick={this.openEditModal} />
-            <a className="fas fa-fw fa-print" />
-            <a className="fas fa-fw fa-trash" onClick={this.openModal} />
+            <button
+              className="fas fa-fw fa-check"
+              onClick={() => push(`/invoice/${id}`)}
+            />
+            <button
+              className="fas fa-fw fa-edit"
+              onClick={this.openEditModal}
+            />
+            <button className="fas fa-fw fa-print" />
+            <button className="fas fa-fw fa-trash" onClick={this.openModal} />
           </div>
         </article>
       </div>
     );
   }
 }
+
+CardItem.defaultProps = {
+  itemValues: {}
+};
+CardItem.propTypes = {
+  itemValues: PropTypes.objectOf(PropTypes.any),
+  actions: PropTypes.objectOf(PropTypes.func).isRequired,
+  forms: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired
+};
 
 export default CardItem;

@@ -2,18 +2,30 @@ import React, { Component } from 'react';
 import {
   Table,
   TableBody,
-  // TableFooter,
+  TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { find, capitalize, map, maxBy, size, omit, identity } from 'lodash';
+import {
+  pick,
+  find,
+  capitalize,
+  map,
+  maxBy,
+  size,
+  omit,
+  identity,
+  reduce,
+  each,
+  uniq
+} from 'lodash';
 import InitializeFromStateForm from './InitializeFromStateForm';
+
+const { keys, assign } = Object;
 
 const styles = {
   propContainer: {
@@ -32,24 +44,15 @@ const styles = {
 export default class TableExampleComplex extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      fixedHeader: true,
-      fixedFooter: false,
-      stripedRows: false,
-      showRowHover: false,
-      selectable: true,
-      multiSelectable: false,
-      enableSelectAll: false,
-      deselectOnClickaway: true,
-      showCheckboxes: false,
-      height: '300px'
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
     this.openModal = this.openModal.bind(this);
     this.handleEditItem = this.handleEditItem.bind(this);
     this.handleCreateItem = this.handleCreateItem.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
+  }
+
+  componentWillMount() {
+    const { invoice, actions } = this.props;
+    actions.setInvoice(invoice);
   }
 
   openModal(mainField, item, onSubmit, handleDeleteItem = identity) {
@@ -68,62 +71,67 @@ export default class TableExampleComplex extends Component {
 
   handleEditItem(type) {
     const { actions } = this.props;
-    return ({ _id, ...body }) => {
+    return ({ _id, ...body }) =>
       actions.apiRequest({
         method: 'put',
         url: `/v1/invoice/${_id}?type=${type}`,
         data: body
       });
-    };
   }
 
   handleCreateItem(type) {
     const { actions, invoice: { _id } } = this.props;
-    return data => {
+    return data =>
       actions.apiRequest({
         method: 'put',
         url: `/v1/invoice/${_id}?type=${type}&kind=new`,
         data
       });
-    };
   }
 
   handleDeleteItem(type) {
     const { actions, invoice: { _id } } = this.props;
-    console.log('delete item');
-    return ({ _id: deleteUid }) => {
-      console.log(deleteUid, 'this is data');
+    return ({ _id: deleteUid }) =>
       actions.apiRequest({
         method: 'put',
         url: `/v1/invoice/${_id}?type=${type}&deleteUid=${deleteUid}`
       });
-    };
-  }
-
-  handleToggle(event, toggled) {
-    this.setState({
-      [event.target.name]: toggled
-    });
-  }
-
-  handleChange(event) {
-    this.setState({ height: event.target.value });
   }
 
   render() {
     const { mainFields, forms, invoice } = this.props;
     return (
       <div>
-        {map(mainFields, (items, mainField) => {
-          const largestItem = maxBy(items, Item => size(Item));
+        {map(pick(invoice, mainFields), (items, mainField) => {
+          // const largestItem = uniq(
+          //   items.reduce(
+          //     (allKeys, item) => allKeys.concat(keys(omit(item, ['_id']))),
+          //     []
+          //   )
+          // );
+          const finalTotals = items.reduce(
+            (totals, item) =>
+              assign(
+                totals,
+                reduce(
+                  omit(item, ['_id']),
+                  (subTotals, v, k) =>
+                    assign(subTotals, { [k]: totals[k] + v || v }),
+                  totals
+                )
+              ),
+            {}
+          );
+          const totalDue = reduce(
+            finalTotals,
+            (total, v, k) => (k === 'old_post_fee' ? total - v : total + v),
+            0
+          );
           return (
             <div key={mainField}>
               <Table
-                height={this.state.height}
-                fixedHeader={this.state.fixedHeader}
-                fixedFooter={this.state.fixedFooter}
-                selectable={this.state.selectable}
-                multiSelectable={this.state.multiSelectable}
+                height="300px"
+                fixedHeader
                 onCellClick={row =>
                   this.openModal(
                     mainField,
@@ -133,22 +141,18 @@ export default class TableExampleComplex extends Component {
                   )
                 }
               >
-                <TableHeader
-                  displaySelectAll={this.state.showCheckboxes}
-                  adjustForCheckbox={this.state.showCheckboxes}
-                  enableSelectAll={this.state.enableSelectAll}
-                >
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                   <TableRow>
                     <TableHeaderColumn
-                      colSpan={size(omit(largestItem, ['_id']))}
-                      tooltip="Super Header"
+                      colSpan={size(finalTotals)}
+                      tooltip={mainField}
                       style={{ textAlign: 'center' }}
                     >
                       {capitalize(mainField)}
                     </TableHeaderColumn>
                   </TableRow>
                   <TableRow>
-                    {map(omit(largestItem, ['_id']), (_, k) => (
+                    {keys(finalTotals).map(k => (
                       <TableHeaderColumn key={k} tooltip={k}>
                         {k}
                       </TableHeaderColumn>
@@ -156,36 +160,35 @@ export default class TableExampleComplex extends Component {
                   </TableRow>
                 </TableHeader>
                 <TableBody
-                  displayRowCheckbox={this.state.showCheckboxes}
-                  deselectOnClickaway={this.state.deselectOnClickaway}
-                  showRowHover={this.state.showRowHover}
-                  stripedRows={this.state.stripedRows}
+                  displayRowCheckbox={false}
+                  deselectOnClickaway
+                  showRowHover
+                  stripedRows
                 >
-                  {items.map(item => {
-                    return (
-                      <TableRow key={item['_id']}>
-                        {map(omit(item, ['_id']), (v, k) => (
-                          <TableRowColumn key={k}>{v}</TableRowColumn>
-                        ))}
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-                {/* Add a footer here if we want <TableFooter adjustForCheckbox={this.state.showCheckboxes}>
-                <TableRow>
-                  {map(largestItem, (_, k) => (
-                    <TableRowColumn key={k}>{k}</TableRowColumn>
+                  {items.map(({ _id: id, ...item }) => (
+                    <TableRow key={id}>
+                      {keys(finalTotals).map(key => (
+                        <TableRowColumn key={key}>{item[key]}</TableRowColumn>
+                      ))}
+                    </TableRow>
                   ))}
-                </TableRow>
-                <TableRow>
-                  <TableRowColumn
-                    colSpan={size(largestItem)}
-                    style={{ textAlign: 'center' }}
-                  >
-                    {capitalize(mainField)}
-                  </TableRowColumn>
-                </TableRow>
-                </TableFooter> */}
+                </TableBody>
+
+                <TableFooter>
+                  <TableRow>
+                    {map(finalTotals, (value, key) => (
+                      <TableRowColumn key={key}>{value}</TableRowColumn>
+                    ))}
+                  </TableRow>
+                  <TableRow>
+                    <TableRowColumn
+                      colSpan={size(finalTotals)}
+                      style={{ textAlign: 'center' }}
+                    >
+                      {`Total ${capitalize(mainField)}: ${totalDue}`}
+                    </TableRowColumn>
+                  </TableRow>
+                </TableFooter>
               </Table>
               <FloatingActionButton
                 type="button"
@@ -198,71 +201,6 @@ export default class TableExampleComplex extends Component {
             </div>
           );
         })}
-
-        <div style={styles.propContainer}>
-          <h3>Table Properties</h3>
-          <TextField
-            floatingLabelText="Table Body Height"
-            defaultValue={this.state.height}
-            onChange={this.handleChange}
-          />
-          <Toggle
-            name="fixedHeader"
-            label="Fixed Header"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.fixedHeader}
-          />
-          <Toggle
-            name="fixedFooter"
-            label="Fixed Footer"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.fixedFooter}
-          />
-          <Toggle
-            name="selectable"
-            label="Selectable"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.selectable}
-          />
-          <Toggle
-            name="multiSelectable"
-            label="Multi-Selectable"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.multiSelectable}
-          />
-          <Toggle
-            name="enableSelectAll"
-            label="Enable Select All"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.enableSelectAll}
-          />
-          <h3 style={styles.propToggleHeader}>TableBody Properties</h3>
-          <Toggle
-            name="deselectOnClickaway"
-            label="Deselect On Clickaway"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.deselectOnClickaway}
-          />
-          <Toggle
-            name="stripedRows"
-            label="Stripe Rows"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.stripedRows}
-          />
-          <Toggle
-            name="showRowHover"
-            label="Show Row Hover"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.showRowHover}
-          />
-          <h3 style={styles.propToggleHeader}>Multiple Properties</h3>
-          <Toggle
-            name="showCheckboxes"
-            label="Show Checkboxes"
-            onToggle={this.handleToggle}
-            defaultToggled={this.state.showCheckboxes}
-          />
-        </div>
       </div>
     );
   }
