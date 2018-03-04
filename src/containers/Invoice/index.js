@@ -6,6 +6,7 @@ import { setModal, unsetModal } from 'react-redux-dialog';
 import { find, reduce, omit } from 'lodash';
 import WizardForm from '../../containers/WizardForm';
 import Card from '../../containers/Card';
+import Receipt from '../../containers/Receipt';
 import Table from '../../components/Table';
 import forms from './questions';
 
@@ -14,12 +15,11 @@ import {
   selectApiRequestInvoices,
   selectApiRequestSuccess,
   selectApiRequestError,
-  selectInvoice,
   selectEditFields
 } from './selectors';
 import { apiRequest, setInvoice, setEditFields } from './actions';
 
-const { assign, keys } = Object;
+const { assign } = Object;
 
 const getFinalTotals = items =>
   items.reduce(
@@ -91,14 +91,22 @@ class Invoice extends Component {
 
   render() {
     const {
-      match: { params: { id } },
+      match: { params: { id, receipt } },
       invoices,
       actions,
       invoice,
       ...rest
     } = this.props;
+    console.log(this.props.match);
     if (id === 'new') {
       return <WizardForm forms={forms} actions={actions} {...rest} />;
+    } else if (receipt && id) {
+      return (
+        <Receipt
+          getFinalTotals={getFinalTotals}
+          invoice={find(invoices, { _id: id })}
+        />
+      );
     } else if (id) {
       return (
         <Table

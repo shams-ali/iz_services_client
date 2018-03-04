@@ -123,7 +123,6 @@ class CardItem extends Component {
       modalIsOpen
     } = this.props;
     const { flipped, icon, card } = this.state;
-    console.log(modalIsOpen, 'this is modalisopen');
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
         <article className={card.join(' ')}>
@@ -168,7 +167,10 @@ class CardItem extends Component {
               className="fas fa-fw fa-edit"
               onClick={this.openEditModal}
             />
-            <button className="fas fa-fw fa-print" />
+            <button
+              className="fas fa-fw fa-print"
+              onClick={() => push(`/invoice/${id}/receipt`)}
+            />
             <button className="fas fa-fw fa-trash" onClick={this.openModal} />
           </div>
         </article>
