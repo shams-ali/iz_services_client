@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { capitalize } from 'lodash';
 import MenuItem from 'material-ui/MenuItem';
-
+import { TextField, SelectField } from 'redux-form-material-ui';
 import { selectEditFields } from '../containers/Invoice/selectors';
-import { renderTextField, renderSelectField } from './formElements';
 import validate from './Validate';
 
 const Form = ({
@@ -26,8 +25,8 @@ const Form = ({
           {select ? (
             <Field
               name={name}
-              component={renderSelectField}
-              label={capitalize(name)}
+              component={SelectField}
+              hintText={capitalize(name)}
             >
               {select.map(menuItem => (
                 <MenuItem value={menuItem} primaryText={menuItem} />
@@ -37,8 +36,9 @@ const Form = ({
             <Field
               name={name}
               type={type}
-              component={renderTextField}
-              label={capitalize(name)}
+              component={TextField}
+              hintText={capitalize(name)}
+              floatingLabelText={capitalize(name)}
             />
           )}
         </div>

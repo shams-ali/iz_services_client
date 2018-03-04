@@ -1,84 +1,14 @@
 import React from 'react';
 import { capitalize } from 'lodash';
 import { Field } from 'redux-form';
-import TextField from 'material-ui/TextField';
-import { RadioButtonGroup } from 'material-ui/RadioButton';
-import Checkbox from 'material-ui/Checkbox';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import { SelectField, TextField } from 'redux-form-material-ui';
 
-export const renderTextField = ({
-  input,
-  label,
-  value,
-  meta: { touched, error },
-  ...custom
-}) => (
-  <TextField
-    value={value}
-    hintText={label}
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
-);
-
-export const renderCheckbox = ({ input, label }) => (
-  <Checkbox
-    label={label}
-    checked={input.value ? true : false}
-    onCheck={input.onChange}
-  />
-);
-
-export const renderRadioGroup = ({ input, ...rest }) => (
-  <RadioButtonGroup
-    {...input}
-    {...rest}
-    valueSelected={input.value}
-    onChange={(event, value) => input.onChange(value)}
-  />
-);
-
-export const renderSelectField = ({
-  input,
-  label,
-  meta: { touched, error },
-  children,
-  ...custom
-}) => (
-  <SelectField
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    onChange={(event, index, value) => input.onChange(value)}
-    children={children}
-    {...custom}
-  />
-);
-
-export const renderField = ({
-  input,
-  label,
-  maxLength,
-  type,
-  meta: { touched, error }
-}) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} placeholder={label} type={type} maxLength={maxLength} />
-      {touched && error && <span>{error}</span>}
-    </div>
-  </div>
-);
-
-export const renderFieldArray = ({
+const renderFieldArray = ({
   formFields,
   formName,
   fields,
@@ -101,9 +31,9 @@ export const renderFieldArray = ({
             {select ? (
               <Field
                 {...props}
-                name={name}
-                component={renderSelectField}
-                label={capitalize(name)}
+                name={`${field}${name}`}
+                component={SelectField}
+                hintText={capitalize(name)}
               >
                 {select.map(value => (
                   <MenuItem key={value} value={value} primaryText={value} />
@@ -114,8 +44,9 @@ export const renderFieldArray = ({
                 {...props}
                 name={`${field}${name}`}
                 type={type}
-                component={renderTextField}
-                label={capitalize(name)}
+                component={TextField}
+                hintText={capitalize(name)}
+                floatingLabelText={capitalize(name)}
               />
             )}
           </div>
@@ -128,3 +59,5 @@ export const renderFieldArray = ({
     {submitFailed && error && <span>{error}</span>}
   </article>
 );
+
+export default renderFieldArray;

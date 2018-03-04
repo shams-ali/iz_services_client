@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { getAuth } from './actions';
 import validate from './validate';
-import { renderTextField } from '../../components/formElements';
+import { TextField } from 'redux-form-material-ui';
 import { selectAuth, selectAuthError } from './selectors';
 
 let MaterialUiForm = props => {
@@ -26,12 +26,12 @@ let MaterialUiForm = props => {
   return (
     <form onSubmit={handleSubmit(getAuth)}>
       <div>
-        <Field name="email" component={renderTextField} label="Email" />
+        <Field name="email" component={TextField} label="Email" />
       </div>
       <div>
         <Field
           name="password"
-          component={renderTextField}
+          component={TextField}
           label="Password"
           type="password"
         />

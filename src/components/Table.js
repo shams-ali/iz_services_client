@@ -15,28 +15,14 @@ import {
   find,
   capitalize,
   map,
-  maxBy,
   size,
   omit,
   identity,
-  reduce,
-  each,
-  uniq
+  reduce
 } from 'lodash';
 import InitializeFromStateForm from './InitializeFromStateForm';
 
 const { keys, assign } = Object;
-
-const styles = {
-  propContainer: {
-    width: 200,
-    overflow: 'hidden',
-    margin: '20px auto 0'
-  },
-  propToggleHeader: {
-    margin: '20px auto 10px'
-  }
-};
 
 /**
  * A more complex example, allowing the table height to be set, and key boolean properties to be toggled.
@@ -105,12 +91,6 @@ export default class TableExampleComplex extends Component {
     return (
       <div>
         {map(pick(invoice, mainFields), (items, mainField) => {
-          // const largestItem = uniq(
-          //   items.reduce(
-          //     (allKeys, item) => allKeys.concat(keys(omit(item, ['_id']))),
-          //     []
-          //   )
-          // );
           const finalTotals = items.reduce(
             (totals, item) =>
               assign(
