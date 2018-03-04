@@ -36,7 +36,7 @@ class WizardForm extends Component {
     const { forms } = this.props;
     const { name, fields } = forms[page];
     return (
-      <div>
+      <div className="center">
         <h2>{capitalize(name)} Info</h2>
         <Form
           previousPage={page ? this.previousPage : null}

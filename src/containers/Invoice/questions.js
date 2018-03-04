@@ -10,7 +10,7 @@ const forms = [
       { name: 'address' },
       { name: 'city' },
       { name: 'state', maxLength: 2 },
-      { name: 'zip', type: 'tel', maxLength: 5 }
+      { name: 'zip', type: 'zip', maxLength: 5 }
     ]
   },
   {
@@ -35,8 +35,8 @@ const forms = [
       { name: 'other_fee', type: 'number' },
       { name: 'extra_discount', type: 'number' },
       { name: 'old_post_fee', type: 'number' },
-      { name: 'ros_bos' },
-      { name: 'ros_num' },
+      { name: 'ros_bos', type: 'number' },
+      { name: 'ros_num', type: 'number' },
       { name: 'tax', type: 'number' },
       { name: 'vehicle_tax', type: 'number' }
     ]

@@ -1,12 +1,9 @@
 import React from 'react';
-import { capitalize } from 'lodash';
-import { Field } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { SelectField, TextField } from 'redux-form-material-ui';
+import RenderInputFields from './RenderInputFields';
 
 const renderFieldArray = ({
   formFields,
@@ -26,29 +23,9 @@ const renderFieldArray = ({
           <h4>#{index + 1}</h4>
         </IconButton>
 
-        {formFields.map(({ type = 'text', select, name, ...props }) => (
+        {formFields.map(({ type = 'text', select, name }) => (
           <div key={name}>
-            {select ? (
-              <Field
-                {...props}
-                name={`${field}${name}`}
-                component={SelectField}
-                hintText={capitalize(name)}
-              >
-                {select.map(value => (
-                  <MenuItem key={value} value={value} primaryText={value} />
-                ))}
-              </Field>
-            ) : (
-              <Field
-                {...props}
-                name={`${field}${name}`}
-                type={type}
-                component={TextField}
-                hintText={capitalize(name)}
-                floatingLabelText={capitalize(name)}
-              />
-            )}
+            <RenderInputFields type={type} name={name} select={select} />
           </div>
         ))}
       </section>

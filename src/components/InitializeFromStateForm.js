@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { capitalize } from 'lodash';
-import MenuItem from 'material-ui/MenuItem';
-import { TextField, SelectField } from 'redux-form-material-ui';
+import { reduxForm } from 'redux-form';
 import { selectEditFields } from '../containers/Invoice/selectors';
 import validate from './Validate';
+import RenderInputFields from './RenderInputFields';
 
 const Form = ({
   handleSubmit,
@@ -22,25 +20,7 @@ const Form = ({
     <form onSubmit={handleSubmit}>
       {fields.map(({ type = 'text', name, select }) => (
         <div key={name}>
-          {select ? (
-            <Field
-              name={name}
-              component={SelectField}
-              hintText={capitalize(name)}
-            >
-              {select.map(menuItem => (
-                <MenuItem value={menuItem} primaryText={menuItem} />
-              ))}
-            </Field>
-          ) : (
-            <Field
-              name={name}
-              type={type}
-              component={TextField}
-              hintText={capitalize(name)}
-              floatingLabelText={capitalize(name)}
-            />
-          )}
+          <RenderInputFields type={type} name={name} select={select} />
         </div>
       ))}
       <div>
