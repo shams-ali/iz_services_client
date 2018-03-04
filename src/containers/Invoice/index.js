@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'react-router-redux';
 import { setModal, unsetModal } from 'react-redux-dialog';
-import { find, pick } from 'lodash';
+import { find, reduce, omit } from 'lodash';
 import WizardForm from '../../containers/WizardForm';
 import Card from '../../containers/Card';
 import Table from '../../components/Table';
@@ -18,6 +18,43 @@ import {
   selectEditFields
 } from './selectors';
 import { apiRequest, setInvoice, setEditFields } from './actions';
+
+const { assign, keys } = Object;
+
+const getFinalTotals = items =>
+  items.reduce(
+    (totals, item) =>
+      assign(
+        totals,
+        reduce(
+          omit(item, ['_id']),
+          (subTotals, v, k) =>
+            assign(subTotals, {
+              [k]: (typeof v !== 'string' && totals[k] + v) || v
+            }),
+          totals
+        )
+      ),
+    {}
+  );
+
+const getTotalDue = finalTotals =>
+  reduce(
+    finalTotals,
+    (total, v, k) => {
+      if (k === 'old_post_fee') {
+        return total - v;
+      }
+      if (typeof v === 'string') {
+        return total;
+      }
+      return total + v;
+    },
+    0
+  );
+
+const getBalance = (fees, payments) =>
+  getTotalDue(getFinalTotals(fees)) - getTotalDue(getFinalTotals(payments));
 
 class Invoice extends Component {
   componentDidMount() {
@@ -78,13 +115,16 @@ class Invoice extends Component {
         actions={actions}
         items={invoices}
         forms={forms}
+        getBalance={getBalance}
         filterBy={[
           'case_status',
           'case_type',
           'vin',
           'name',
           'dealer',
-          'phone'
+          'phone',
+          'fees',
+          'payments'
         ]}
         {...rest}
       />

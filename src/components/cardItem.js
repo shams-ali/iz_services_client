@@ -114,9 +114,12 @@ class CardItem extends Component {
         comments,
         case_type: caseType,
         case_status: caseStatus,
-        _id: id
+        _id: id,
+        fees,
+        payments
       },
-      actions: { push }
+      actions: { push },
+      getBalance
     } = this.props;
     const { flipped, icon, card } = this.state;
     return (
@@ -134,7 +137,9 @@ class CardItem extends Component {
               <List>
                 <ListItem primaryText={`Customer: ${name || dealer || ''}`} />
                 {phone && <ListItem primaryText={`Phone: ${phone}`} />}
-                <ListItem primaryText="Balance: 100$" />
+                <ListItem
+                  primaryText={`Balance: ${getBalance(fees, payments)}`}
+                />
                 {caseType && (
                   <ListItem primaryText={`Case Type: ${caseType}`} />
                 )}

@@ -99,7 +99,7 @@ export default class TableExampleComplex extends Component {
                   omit(item, ['_id']),
                   (subTotals, v, k) =>
                     assign(subTotals, {
-                      [k]: totals[k] + v || v
+                      [k]: (typeof v !== 'string' && totals[k] + v) || v
                     }),
                   totals
                 )
@@ -108,7 +108,15 @@ export default class TableExampleComplex extends Component {
           );
           const totalDue = reduce(
             finalTotals,
-            (total, v, k) => (k === 'old_post_fee' ? total - v : total + v),
+            (total, v, k) => {
+              if (k === 'old_post_fee') {
+                return total - v;
+              }
+              if (typeof v === 'string') {
+                return total;
+              }
+              return total + v;
+            },
             0
           );
           return (
@@ -160,11 +168,6 @@ export default class TableExampleComplex extends Component {
                   ))}
                 </TableBody>
                 <TableFooter className="table-footer">
-                  <TableRow>
-                    {map(finalTotals, (value, key) => (
-                      <TableRowColumn key={key}> {value} </TableRowColumn>
-                    ))}
-                  </TableRow>
                   <TableRow>
                     <TableRowColumn
                       colSpan={size(finalTotals)}
