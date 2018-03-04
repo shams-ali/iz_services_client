@@ -16,11 +16,11 @@ class WizardForm extends Component {
   handleSubmit(data) {
     const { actions } = this.props;
     console.log(data, 'this is data');
-    /* actions.apiRequest({
+    actions.apiRequest({
       url: '/v1/invoice',
       method: 'post',
       data
-    }); */
+    });
   }
 
   nextPage() {

@@ -64,7 +64,7 @@ class CardItem extends Component {
         type: 'confirm',
         confirm: 'Are You sure You Want To Delete This Invoice?'
       },
-      modalProps: { isOpen: true }
+      modalProps: { isOpen: true, style: { 'z-index': 10 } }
     });
   }
 
@@ -90,7 +90,7 @@ class CardItem extends Component {
         onSubmit: this.handleEditItem,
         actions
       },
-      modalProps: { isOpen: true }
+      modalProps: { isOpen: true, style: { 'z-index': 10 } }
     });
   }
 
@@ -119,13 +119,15 @@ class CardItem extends Component {
         payments
       },
       actions: { push },
-      getBalance
+      getBalance,
+      modalIsOpen
     } = this.props;
     const { flipped, icon, card } = this.state;
+    console.log(modalIsOpen, 'this is modalisopen');
     return (
       <div className="col-md-4 col-sm-6 col-xs-12">
         <article className={card.join(' ')}>
-          <h2>
+          <h2 className={modalIsOpen ? 'modalIsActive' : ''}>
             <span>VIN: {vin}</span>
             <strong>
               <i className="fa fa-fw fa-star" />
@@ -150,7 +152,10 @@ class CardItem extends Component {
             )}
             <div className="mc-description">{`Comments: ${comments}`}</div>
           </div>
-          <button onClick={this.flipCard} className="mc-btn-action">
+          <button
+            onClick={this.flipCard}
+            className={`mc-btn-action ${modalIsOpen ? 'modalIsActive' : ''}`}
+          >
             <i className={icon.join(' ')} />
           </button>
           <div className="mc-footer">
