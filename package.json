@@ -60,5 +60,5 @@
     "eslint-plugin-react": "^7.6.1",
     "prettier": "^1.10.2"
   },
-  "proxy": "http://localhost:3030/"
+  "proxy": "http://api:3030"
 }

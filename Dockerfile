@@ -13,6 +13,7 @@ RUN yarn install
 COPY . /usr/src/app
 
 EXPOSE 3000
+EXPOSE 3030
 EXPOSE 80
 EXPOSE 443
 
