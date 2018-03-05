@@ -98,7 +98,7 @@ class CardItem extends Component {
     const { actions, itemValues: { _id: id } } = this.props;
     actions.apiRequest({
       method: 'delete',
-      url: `v1/invoice/${id}`
+      url: `/v1/invoice/${id}`
     });
   }
 

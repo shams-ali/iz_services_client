@@ -140,16 +140,13 @@ class Invoice extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    invoices: selectApiRequestInvoices(state),
-    editFields: selectEditFields(state),
-    success: selectApiRequestSuccess(state),
-    error: selectApiRequestError(state),
-    modalIsOpen: state.modal
-  };
-};
+const mapStateToProps = state => ({
+  invoices: selectApiRequestInvoices(state),
+  editFields: selectEditFields(state),
+  success: selectApiRequestSuccess(state),
+  error: selectApiRequestError(state),
+  modalIsOpen: state.modal
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
