@@ -8,7 +8,7 @@ const { PORT, API_URL } = process.env;
 
 const app = express();
 
-app.use(express.static('build'));
+app.use('/', express.static('build'));
 
 // app.use('/api', proxy(`${API_URL}`));
 
