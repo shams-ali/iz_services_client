@@ -15,7 +15,11 @@ app.use(express.static('build'));
 app.use(
   '/v1',
   proxy(API_URL, {
-    proxyReqPathResolver: req => `/v1/${url.parse(req.url).path}`
+    proxyReqPathResolver: req => {
+      console.log(API_URL, 'this is api url');
+      console.log(`/v1${url.parse(req.url).path}`, 'going here?');
+      return `/v1${url.parse(req.url).path}`;
+    }
   })
 );
 
