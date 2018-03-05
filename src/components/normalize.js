@@ -39,12 +39,20 @@ const model_year = value => {
 
   return value.replace(/[^\d]/g, '').slice(0, 4);
 };
+const make = value => {
+  if (!value) {
+    return value;
+  }
+
+  return value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+};
 
 const normalize = {
   phone,
   zip,
   state,
-  model_year
+  model_year,
+  make
 };
 
 export default normalize;

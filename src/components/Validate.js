@@ -2,7 +2,7 @@ const { assign } = Object;
 const required = ['vin', 'model_year'];
 
 const validate = values => {
-  const { email, zip, year } = values;
+  const { vin, email, zip, year, plate, make } = values;
 
   const errors = {};
   if (email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
@@ -13,6 +13,15 @@ const validate = values => {
   }
   if (year && year.length !== 4) {
     errors.year = 'Must be four digits';
+  }
+  if (vin && vin.length > 17) {
+    errors.vin = 'Must be less than 17 characters';
+  }
+  if (plate && plate.length > 7) {
+    errors.plate = 'Must be less than 7 characters';
+  }
+  if (make && make.length > 4) {
+    errors.make = 'Must be less than 4 letters';
   }
 
   return Object.assign(

@@ -7,7 +7,6 @@ import './index.css';
 const { assign } = Object;
 
 const Receipt = ({ invoice, getFinalTotals }) => {
-  console.log(invoice);
   const {
     _id: id,
     name = '',
@@ -29,8 +28,6 @@ const Receipt = ({ invoice, getFinalTotals }) => {
   const {
     dmv_fee: dmvFee = 0,
     service_fee: serviceFee = 0,
-    tax = 0,
-    vehicle_tax: vehicleTax = 0,
     extra_discount: extraDiscount = 0,
     other_fee: otherFee = 0,
     ros_bos: rosBos = 0,
@@ -38,12 +35,10 @@ const Receipt = ({ invoice, getFinalTotals }) => {
     old_post_fee: oldPostFee = 0
   } = getFinalTotals(fees);
 
-  const customerTotalFees =
-    sum([dmvFee, serviceFee, otherFee, vehicleTax, tax]) - extraDiscount;
+  const customerTotalFees = sum([dmvFee, serviceFee, otherFee]) - extraDiscount;
 
   const adminTotalFees =
-    sum([dmvFee, serviceFee, otherFee, vehicleTax, tax, rosBos, rosNum]) -
-    extraDiscount;
+    sum([dmvFee, serviceFee, otherFee, rosBos, rosNum]) - extraDiscount;
 
   const { debit = 0, cash = 0, check = 0, credit = 0 } = payments.reduce(
     (total, { type, amount }) => assign(total, { [type]: amount }),
@@ -91,17 +86,15 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <th colSpan={5}>Fees: ${customerTotalFees}</th>
           </tr>
           <tr>
-            <th>DMV FEE</th>
+            <th colSpan={2}>DMV FEE</th>
             <th>Service Fee</th>
             <th>Other Fee</th>
-            <th>Sales Tax</th>
             <th>Discount</th>
           </tr>
           <tr>
-            <td>${dmvFee}</td>
+            <td colSpan={2}>${dmvFee}</td>
             <td>${serviceFee}</td>
             <td>${otherFee}</td>
-            <td>${vehicleTax + tax}</td>
             <td>${extraDiscount}</td>
           </tr>
           <tr>
@@ -142,7 +135,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td colSpan={3}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
               {`Case Type: ${caseType}`} <br />
-              {`Case Status: ${caseType}`} <br />
+              {`Case Status: ${caseStatus}`} <br />
             </td>
             <td colSpan={2}>
               <h4>{`Vin: ${vin}`}</h4>
@@ -161,14 +154,14 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <th>DMV FEE</th>
             <th>Service Fee</th>
             <th>Other Fee</th>
-            <th>ROS + Sales Tax</th>
+            <th>ROS</th>
             <th>Discount</th>
           </tr>
           <tr>
             <td>${dmvFee}</td>
             <td>${serviceFee}</td>
             <td>${otherFee}</td>
-            <td>${vehicleTax + tax + rosBos + rosNum}</td>
+            <td>${rosBos + rosNum}</td>
             <td>${extraDiscount}</td>
           </tr>
           <tr>

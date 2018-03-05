@@ -24,7 +24,7 @@ const RenderInputFields = ({ type, name, select, label }) => {
         hintText={capitalize(label || name)}
       >
         {select.map(menuItem => (
-          <MenuItem value={menuItem} primaryText={menuItem} />
+          <MenuItem key={menuItem} value={menuItem} primaryText={menuItem} />
         ))}
       </Field>
     );

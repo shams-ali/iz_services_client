@@ -22,8 +22,8 @@ const forms = [
       { name: 'model_year', type: 'year' },
       { name: 'exp_date', type: 'date' },
       { name: 'engine' },
-      { name: 'case_type' },
-      { name: 'case_status' },
+      { name: 'case_type', select: ['type1', 'type2', 'type3'] },
+      { name: 'case_status', select: ['status1', 'status2', 'status3'] },
       { name: 'comments' }
     ]
   },
@@ -36,15 +36,13 @@ const forms = [
       { name: 'extra_discount', type: 'number' },
       { name: 'old_post_fee', type: 'number' },
       { name: 'ros_bos', type: 'number' },
-      { name: 'ros_num', type: 'number' },
-      { name: 'tax', type: 'number' },
-      { name: 'vehicle_tax', type: 'number' }
+      { name: 'ros_num', type: 'number' }
     ]
   },
   {
     name: 'payments',
     fields: [
-      { name: 'type', select: ['cash', 'credit', 'check'] },
+      { name: 'type', select: ['cash', 'credit', 'check', 'debit'] },
       { name: 'amount', type: 'number' }
     ]
   }
