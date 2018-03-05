@@ -5,20 +5,24 @@ import MenuItem from 'material-ui/MenuItem';
 import { TextField, SelectField, DatePicker } from 'redux-form-material-ui';
 import normalize from './normalize';
 
-const RenderInputFields = ({ type, name, select }) => {
+const RenderInputFields = ({ type, name, select, label }) => {
   if (type === 'date') {
     return (
       <Field
         name={name}
         format={null}
-        floatingLabelText={capitalize(name)}
+        floatingLabelText={capitalize(label || name)}
         component={DatePicker}
       />
     );
   }
   if (select) {
     return (
-      <Field name={name} component={SelectField} hintText={capitalize(name)}>
+      <Field
+        name={name}
+        component={SelectField}
+        hintText={capitalize(label || name)}
+      >
         {select.map(menuItem => (
           <MenuItem value={menuItem} primaryText={menuItem} />
         ))}
@@ -30,8 +34,8 @@ const RenderInputFields = ({ type, name, select }) => {
       name={name}
       type={type}
       normalize={normalize[name]}
-      floatingLabelText={capitalize(name)}
-      hintText={capitalize(name)}
+      floatingLabelText={capitalize(label || name)}
+      hintText={capitalize(label || name)}
       component={TextField}
     />
   );

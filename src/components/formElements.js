@@ -25,7 +25,12 @@ const renderFieldArray = ({
 
         {formFields.map(({ type = 'text', select, name }) => (
           <div key={name}>
-            <RenderInputFields type={type} name={name} select={select} />
+            <RenderInputFields
+              type={type}
+              name={`${field}${name}`}
+              label={name}
+              select={select}
+            />
           </div>
         ))}
       </section>
