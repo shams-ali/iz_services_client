@@ -109,10 +109,7 @@ export default class TableExampleComplex extends Component {
           const totalDue = reduce(
             finalTotals,
             (total, v, k) => {
-              if (k === 'old_post_fee') {
-                return total - v;
-              }
-              if (typeof v === 'string') {
+              if (typeof v === 'string' || k === 'old_post_fee') {
                 return total;
               }
               return total + v;

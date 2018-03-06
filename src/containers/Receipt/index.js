@@ -45,7 +45,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
     {}
   );
 
-  const customerTotalPayments = sum([cash, check, credit, oldPostFee]);
+  const customerTotalPayments = sum([cash, check, credit, debit]);
 
   return (
     <div className="receipt container">
