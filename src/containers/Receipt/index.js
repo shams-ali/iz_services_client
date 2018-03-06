@@ -86,33 +86,33 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <th colSpan={5}>Fees: ${customerTotalFees}</th>
           </tr>
           <tr>
-            <th colSpan={2}>DMV FEE</th>
+            <th>DMV FEE</th>
             <th>Service Fee</th>
             <th>Other Fee</th>
             <th>Discount</th>
+            <th>Old Post Fee</th>
           </tr>
           <tr>
-            <td colSpan={2}>${dmvFee}</td>
+            <td>${dmvFee}</td>
             <td>${serviceFee}</td>
             <td>${otherFee}</td>
             <td>${extraDiscount}</td>
+            <td>${oldPostFee}</td>
           </tr>
           <tr>
             <th colSpan={5}>Payments: ${customerTotalPayments}</th>
           </tr>
-          <tr>
-            <th>Cash</th>
+          <tr colSpan={4}>
+            <th colSpan={2}>Cash</th>
             <th>Check</th>
             <th>Debit</th>
             <th>Credit</th>
-            <th>Old Post Fee</th>
           </tr>
           <tr>
-            <td>${cash}</td>
+            <td colSpan={2}>${cash}</td>
             <td>${check}</td>
             <td>${debit}</td>
             <td>${credit}</td>
-            <td>${oldPostFee}</td>
           </tr>
         </tbody>
         <tfoot>
@@ -124,15 +124,15 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         </tfoot>
       </table>
       <br />
+      {/* ADMIN VIEW */}
       <table>
-        {/* ADMIN VIEW */}
         <thead>
           <tr>
-            <th colSpan={4}>{`Invoice #${id}`} Prepared by Nadeem</th>
+            <th colSpan={5}>{`Invoice #${id}`} Prepared by Nadeem</th>
             <th>{moment().format('MMMM Do YYYY')}</th>
           </tr>
           <tr>
-            <td colSpan={3}>
+            <td colSpan={4}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
               {`Case Type: ${caseType}`} <br />
               {`Case Status: ${caseStatus}`} <br />
@@ -148,7 +148,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         </thead>
         <tbody>
           <tr>
-            <th colSpan={5}>Fees: ${adminTotalFees}</th>
+            <th colSpan={6}>Fees: ${adminTotalFees}</th>
           </tr>
           <tr>
             <th>DMV FEE</th>
@@ -156,6 +156,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <th>Other Fee</th>
             <th>ROS</th>
             <th>Discount</th>
+            <th>Old Post Fee</th>
           </tr>
           <tr>
             <td>${dmvFee}</td>
@@ -163,28 +164,27 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td>${otherFee}</td>
             <td>${rosBos + rosNum}</td>
             <td>${extraDiscount}</td>
-          </tr>
-          <tr>
-            <th colSpan={5}>Payments: ${customerTotalPayments}</th>
-          </tr>
-          <tr>
-            <th>Cash</th>
-            <th>Check</th>
-            <th>Credit</th>
-            <th>Debit</th>
-            <th>Old Post Fee</th>
-          </tr>
-          <tr>
-            <td>${cash}</td>
-            <td>${check}</td>
-            <td>${credit}</td>
-            <td>${debit}</td>
             <td>${oldPostFee}</td>
+          </tr>
+          <tr>
+            <th colSpan={6}>Payments: ${customerTotalPayments}</th>
+          </tr>
+          <tr>
+            <th colSpan={2}>Cash</th>
+            <th colSpan={2}>Check</th>
+            <th colSpan={1}>Credit</th>
+            <th colSpan={1}>Debit</th>
+          </tr>
+          <tr>
+            <td colSpan={2}>${cash}</td>
+            <td colSpan={2}>${check}</td>
+            <td colSpan={1}>${credit}</td>
+            <td colSpan={1}>${debit}</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th colSpan={5}>
+            <th colSpan={6}>
               Outstanding Balance ${adminTotalFees - customerTotalPayments}
             </th>
           </tr>
