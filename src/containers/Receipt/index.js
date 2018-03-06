@@ -185,7 +185,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         <tfoot>
           <tr>
             <th colSpan={5}>
-              Outstanding Balance ${customerTotalFees - customerTotalPayments}
+              Outstanding Balance ${adminTotalFees - customerTotalPayments}
             </th>
           </tr>
         </tfoot>
