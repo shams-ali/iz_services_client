@@ -51,7 +51,6 @@ let MaterialUiForm = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     auth: selectAuth(state),
     authError: selectAuthError(state)

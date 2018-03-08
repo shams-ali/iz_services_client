@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { sum } from 'lodash';
+import moment from 'moment';
+
 import './index.css';
 
 const { assign } = Object;
@@ -10,7 +11,8 @@ const Receipt = ({ invoice, getFinalTotals }) => {
   const {
     _id: id,
     name = '',
-    dealer = '(Walkin Customer)',
+    phone = '',
+    dealer = '(Walk-in Customer)',
     address = '',
     city = '',
     state = '',
@@ -70,6 +72,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td colSpan={3}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
               <p>
+                {phone} <br />
                 {`${address}`} <br /> {`${city}, ${state} ${zip}`}
               </p>
               <p>

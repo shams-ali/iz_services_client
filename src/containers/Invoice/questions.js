@@ -22,8 +22,49 @@ const forms = [
       { name: 'model_year', type: 'year' },
       { name: 'exp_date', type: 'date' },
       { name: 'engine' },
-      { name: 'case_type', select: ['type1', 'type2', 'type3'] },
-      { name: 'case_status', select: ['status1', 'status2', 'status3'] },
+      {
+        name: 'case_type',
+        select: [
+          'Renewal',
+          'Duplicate sticker',
+          'Duplicate Plate',
+          'Duplicate Registration Card ',
+          'Registration Suspension Removal',
+          'Duplicate Title',
+          'Transfer with Title',
+          'Transfer without Title',
+          'Multiple Transfer',
+          'Out of  State',
+          'Lien Sale',
+          'Liensale Transfer',
+          'Salvage ',
+          'Salvage Certificate',
+          'Nonrepairable Certificate',
+          'Add Lien Holder',
+          'Lien Holder Removal',
+          'Vin Verification',
+          'Vehicle Record Request',
+          'Personalized Plate',
+          'Legacy Plate',
+          'Release of Liability'
+        ]
+      },
+      {
+        name: 'case_status',
+        select: [
+          'SEND TO DMV',
+          'COMPLETED & HANDOVER',
+          'COMPLETED/OFFICE',
+          'RDF/OFFICE',
+          'RDF/HANDOVER',
+          'RDF FOR SMOG/HANDOVER',
+          'RDF ROR TITLE/HANDOVER',
+          'RDF FOR SMOG/ OFFICE',
+          'RDF ROR TITLE/OFFICE',
+          'DMV RDF FOR MORE MONEY',
+          'DMV RDF FOR MISSING BOS'
+        ]
+      },
       { name: 'comments' }
     ]
   },
