@@ -12,6 +12,7 @@ const RenderInputFields = ({ type, name, select, label }) => {
         name={name}
         format={null}
         floatingLabelText={capitalize(label || name)}
+        openToYearSelection
         component={DatePicker}
       />
     );

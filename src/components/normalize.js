@@ -15,44 +15,35 @@ const phone = value => {
     10
   )}`;
 };
-const zip = value => {
-  if (!value) {
-    return value;
-  }
 
-  return value.replace(/[^\d]/g, '').slice(0, 5);
-};
-const state = value => {
-  if (!value) {
-    return value;
-  }
+const zip = value => (value ? value.replace(/[^\d]/g, '').slice(0, 5) : value);
 
-  return value
-    .replace(/[^a-zA-Z]/g, '')
-    .slice(0, 2)
-    .toUpperCase();
-};
-const model_year = value => {
-  if (!value) {
-    return value;
-  }
+const state = value =>
+  value
+    ? value
+        .replace(/[^a-zA-Z]/g, '')
+        .slice(0, 2)
+        .toUpperCase()
+    : value;
 
-  return value.replace(/[^\d]/g, '').slice(0, 4);
-};
-const make = value => {
-  if (!value) {
-    return value;
-  }
+const model_year = value =>
+  value ? value.replace(/[^\d]/g, '').slice(0, 4) : value;
 
-  return value.replace(/[^a-zA-Z]/g, '').toUpperCase();
-};
+const make = value =>
+  value ? value.replace(/[^a-zA-Z]/g, '').toUpperCase() : value;
+
+const plate = value => (value ? value.toUpperCase() : value);
+
+const vin = value => (value ? value.toUpperCase() : value);
 
 const normalize = {
   phone,
   zip,
   state,
   model_year,
-  make
+  make,
+  plate,
+  vin
 };
 
 export default normalize;
