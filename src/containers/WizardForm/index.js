@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { capitalize, size } from 'lodash';
+import { capitalize, size, sum, omit } from 'lodash';
 import Form from '../../components/Form';
-import { sum } from 'lodash';
 
 const { values } = Object;
 class WizardForm extends Component {
@@ -12,7 +11,8 @@ class WizardForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       page: 0,
-      total: 0,
+      totalFees: 0,
+      totalPayments: 0,
       calculate: false
     };
   }
@@ -32,25 +32,36 @@ class WizardForm extends Component {
     const { forms } = this.props;
     if (page === size(forms) - 1) {
       const totalFees = fees.reduce(
-        (total, fee) => total + sum(values(fee).map(num => +num)),
+        (total, fee) =>
+          total +
+          sum(
+            values(omit(fee, ['old_post_fee', 'extra_discount'])).map(
+              num => +num
+            )
+          ) -
+          (+fee['extra_discount'] || 0),
         0
       );
       const totalPayments = payments.reduce(
-        (total, { amount }) => total + amount,
+        (total, { amount }) => total + +amount,
         0
       );
-      this.setState({ total: totalFees - totalPayments, calculate: true });
+      this.setState({
+        totalFees,
+        totalPayments,
+        calculate: true
+      });
     } else {
       this.setState({ page: this.state.page + 1 });
     }
   }
 
-  previousPage(v) {
+  previousPage() {
     this.setState({ page: this.state.page - 1 });
   }
 
   render() {
-    const { page, total, calculate } = this.state;
+    const { page, totalFees, totalPayments, calculate } = this.state;
     const { forms } = this.props;
     const { name, fields } = forms[page];
     return (
@@ -64,13 +75,21 @@ class WizardForm extends Component {
               : this.nextPage
           }
           formName={name}
-          resetTotal={() => this.setState({ total: 0, calculate: false })}
+          resetTotal={() =>
+            this.setState({ totalFees: 0, totalPayments: 0, calculate: false })
+          }
           fields={fields}
           lastPage={page === size(forms) - 1}
           key={name}
           calculate={calculate}
         />
-        {['fees', 'payments'].includes(name) && <p>Total due ${total}</p>}
+        {page === size(forms) - 1 && (
+          <div>
+            <p>Total fees ${totalFees}</p>
+            <p>Total payments ${totalPayments}</p>
+            <p>Total due ${totalFees - totalPayments}</p>
+          </div>
+        )}
       </div>
     );
   }
