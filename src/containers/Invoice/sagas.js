@@ -10,7 +10,6 @@ const initializeApiRequest = config =>
 
 function* apiRequest({ config }) {
   const { error, success } = yield call(initializeApiRequest, config);
-  console.log(success, 'this is res in sagas');
   if (error) {
     yield put(apiRequestError(error.message));
   } else {

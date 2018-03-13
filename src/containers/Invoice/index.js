@@ -61,7 +61,6 @@ class Invoice extends Component {
   }
 
   componentWillReceiveProps({ success, error }) {
-    console.log(success.status, error);
     const { actions, match } = this.props;
     if (error) {
       actions.setModal(Modal, {
@@ -94,7 +93,6 @@ class Invoice extends Component {
       invoice,
       ...rest
     } = this.props;
-    console.log(this.props.match);
     if (id === 'new') {
       return <WizardForm forms={forms} actions={actions} {...rest} />;
     } else if (receipt && id) {
