@@ -5,7 +5,15 @@ import renderFieldArray from './formElements';
 import validate from './Validate';
 import RenderInputFields from './RenderInputFields';
 
-const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
+const Form = ({
+  lastPage,
+  handleSubmit,
+  fields,
+  previousPage,
+  formName,
+  calculate,
+  resetTotal
+}) => {
   return (
     <form onSubmit={handleSubmit}>
       {['fees', 'payments'].includes(formName) ? (
@@ -31,11 +39,21 @@ const Form = ({ lastPage, handleSubmit, fields, previousPage, formName }) => {
           secondary
         />
       )}
-      <RaisedButton
-        label={lastPage ? 'Finish' : 'Next'}
-        type="submit"
-        primary
-      />
+      {!lastPage && <RaisedButton label="Next" type="submit" primary />}
+      {lastPage &&
+        calculate && (
+          <div>
+            <RaisedButton
+              label="Reset"
+              type="button"
+              primary
+              onClick={resetTotal}
+            />
+            <RaisedButton label="Finish" type="submit" primary />
+          </div>
+        )}
+      {lastPage &&
+        !calculate && <RaisedButton label="calculate" type="submit" primary />}
     </form>
   );
 };
