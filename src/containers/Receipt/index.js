@@ -7,6 +7,16 @@ import './index.css';
 
 const { assign } = Object;
 
+const disclaimer = `Note: The vehicle owner is responsible for payment of all DMV fees and 
+penalties. The fees deposited with us are the estimated DMV dues. The customer will be advised
+of any additional fees assessed by DMV which have to be paid by customer before the papers can be 
+processed. We are not responsible for any additional penalties which maybe due as a result 
+of late processing of papers. Our service charges are in addition to the DMV fees. Our liability 
+is limited to the refund of deposits which have not been paid to the DMV. All monies paid to the 
+DMV cannot be refunded by us. All claims regarding any fees paid to the DMV will have to be 
+addressed to the DMV directly by the customer.
+`;
+
 const Receipt = ({ invoice, getFinalTotals }) => {
   const {
     _id: id,
@@ -125,6 +135,11 @@ const Receipt = ({ invoice, getFinalTotals }) => {
                 customerTotalPayments -
                 rosBos -
                 rosNum}
+            </th>
+          </tr>
+          <tr>
+            <th colSpan={5}>
+              <caption>{disclaimer}</caption>
             </th>
           </tr>
         </tfoot>
