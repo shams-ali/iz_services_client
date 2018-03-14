@@ -9,7 +9,8 @@ import { selectAuth } from './containers/Login/selectors';
 import Header from './components/Header';
 
 const Layout = ({ children, actions: { logOut: dispatchLogOut } }) => {
-  const { token } = JSON.parse(localStorage.getItem('auth')) || {};
+  const { token, user: { username } = {} } =
+    JSON.parse(localStorage.getItem('auth')) || {};
   const { pathname } = window.location;
   if (pathname !== '/login' && !token) {
     return <Redirect to="/login" />;
@@ -17,7 +18,7 @@ const Layout = ({ children, actions: { logOut: dispatchLogOut } }) => {
   return (
     <div>
       {<ModalContainer />}
-      {<Header token={token} logOut={dispatchLogOut} />}
+      {<Header token={token} username={username} logOut={dispatchLogOut} />}
       <main>{children}</main>
     </div>
   );

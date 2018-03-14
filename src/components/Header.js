@@ -6,8 +6,9 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import ActionHome from 'material-ui/svg-icons/action/home';
+import PropTypes from 'prop-types';
 
-const Header = ({ token, logOut }) => (
+const Header = ({ token, logOut, username }) => (
   <AppBar
     title="Registration Invoice Generator"
     iconElementLeft={
@@ -29,7 +30,7 @@ const Header = ({ token, logOut }) => (
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <MenuItem primaryText="WalkIn Application" href="/invoice/new" />
-          <MenuItem primaryText="Sign out" onClick={logOut} />
+          <MenuItem primaryText={`Sign out: ${username}`} onClick={logOut} />
         </IconMenu>
       ) : (
         <MenuItem primaryText="Login" href="/login" />
@@ -37,5 +38,16 @@ const Header = ({ token, logOut }) => (
     }
   />
 );
+
+Header.defaultProps = {
+  username: '',
+  token: null
+};
+
+Header.propTypes = {
+  username: PropTypes.string,
+  token: PropTypes.string,
+  logOut: PropTypes.func.isRequired
+};
 
 export default Header;

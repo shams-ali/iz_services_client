@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { sum } from 'lodash';
+import { sum, capitalize } from 'lodash';
 import moment from 'moment';
 
 import './index.css';
@@ -18,6 +18,7 @@ addressed to the DMV directly by the customer.
 `;
 
 const Receipt = ({ invoice, getFinalTotals }) => {
+  const { user: { username } } = JSON.parse(localStorage.getItem('auth'));
   const {
     _id: id,
     name = '',
@@ -65,7 +66,9 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         {/* <caption>A complex table</caption> */}
         <thead>
           <tr>
-            <th colSpan={4}>{`Invoice #${id}`} Prepared by Nadeem</th>
+            <th colSpan={4}>{`Invoice #${id} Prepared by ${capitalize(
+              username
+            )}`}</th>
             <th>{moment().format('MMMM Do YYYY')}</th>
           </tr>
           <tr>
