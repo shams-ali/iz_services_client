@@ -8,7 +8,7 @@ import validate from './validate';
 import { TextField } from 'redux-form-material-ui';
 import { selectAuth, selectAuthError } from './selectors';
 
-let MaterialUiForm = props => {
+let Login = props => {
   const {
     auth,
     authError,
@@ -19,14 +19,19 @@ let MaterialUiForm = props => {
     actions: { getAuth }
   } = props;
 
-  if (auth && auth !== 'undefined') {
+  if (auth && auth.token) {
     return <Redirect to="/" />;
   }
 
   return (
     <form onSubmit={handleSubmit(getAuth)}>
       <div>
-        <Field name="email" component={TextField} label="Email" />
+        <Field
+          name="username"
+          component={TextField}
+          floatingLabelText="Username"
+          hintText="Username"
+        />
       </div>
       <div>
         <Field
@@ -34,6 +39,8 @@ let MaterialUiForm = props => {
           component={TextField}
           label="Password"
           type="password"
+          floatingLabelText="Password"
+          hintText="Password"
         />
       </div>
       {authError && <strong>{authError}</strong>}
@@ -61,10 +68,10 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ getAuth }, dispatch)
 });
 
-MaterialUiForm = reduxForm({
-  form: 'MaterialUiForm', // a unique identifier for this form
+Login = reduxForm({
+  form: 'Login', // a unique identifier for this form
   validate,
   asyncBlurFields: ['username']
-})(MaterialUiForm);
+})(Login);
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialUiForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

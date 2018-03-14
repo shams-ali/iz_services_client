@@ -9,14 +9,15 @@ import Card from '../../containers/Card';
 import Receipt from '../../containers/Receipt';
 import Table from '../../components/Table';
 import forms from './questions';
+// import Modal from '../../components/modal';
 
-import Modal from '../../components/modal';
 import {
   selectApiRequestInvoices,
   selectApiRequestSuccess,
   selectApiRequestError,
   selectEditFields
 } from './selectors';
+
 import { apiRequest, setInvoice, setEditFields } from './actions';
 
 const { assign } = Object;
@@ -63,17 +64,24 @@ class Invoice extends Component {
   componentWillReceiveProps({ success, error }) {
     const { actions, match } = this.props;
     if (error) {
-      actions.setModal(Modal, {
-        componentProps: {
-          title: error.message || 'There was an error with your request',
-          open: true,
-          onRequestClose: actions.unsetModal,
-          error
-        },
-        modalProps: { isOpen: true }
-      });
+      console.error(error.response);
+      const { status } = error.response;
+      if (status === 401) {
+        actions.push('/login');
+      }
+      // actions.setModal(Modal, {
+      //   componentProps: {
+      //     title: 'There was an error with your request',
+      //     open: true,
+      //     onRequestClose:
+      //       status === 401 ? () => actions.push('/login') : actions.unsetModal,
+      //     error: statusText
+      //   },
+      //   modalProps: { isOpen: true }
+      // });
     }
     if ([201, 202, 204].includes(success.status)) {
+      console.warn('success');
       actions.unsetModal();
       if (match.params.id === 'new') {
         actions.push('/invoice');

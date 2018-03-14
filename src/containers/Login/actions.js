@@ -1,8 +1,17 @@
-import { GET_AUTH, GET_AUTH_SUCCESS, GET_AUTH_ERROR } from './constants';
+import {
+  GET_AUTH,
+  GET_AUTH_SUCCESS,
+  GET_AUTH_ERROR,
+  LOG_OUT
+} from './constants';
 
 export const getAuth = data => ({
   type: GET_AUTH,
   data
+});
+
+export const logOut = () => ({
+  type: LOG_OUT
 });
 
 export const getAuthSuccess = data => ({
