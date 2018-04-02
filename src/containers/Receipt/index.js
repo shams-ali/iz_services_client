@@ -158,6 +158,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
           <tr>
             <td colSpan={4}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
+              {phone} <br />
               {`Case Type: ${caseType}`} <br />
               {`Case Status: ${caseStatus}`} <br />
             </td>

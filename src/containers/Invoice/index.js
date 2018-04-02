@@ -81,10 +81,10 @@ class Invoice extends Component {
       // });
     }
     if ([201, 202, 204].includes(success.status)) {
-      console.warn('success');
+      console.warn('success', success);
       actions.unsetModal();
       if (match.params.id === 'new') {
-        actions.push('/invoice');
+        actions.push(`/invoice/${success.data._id}/receipt`);
       }
       actions.apiRequest({
         method: 'get',

@@ -86,7 +86,7 @@ class CardItem extends Component {
     actions.setEditFields(omit(itemValues, ['fees', 'payments']));
     actions.setModal(InitializeFromStateForm, {
       componentProps: {
-        fields: assign(clientFields, vehicleFields),
+        fields: clientFields.concat(vehicleFields),
         onSubmit: this.handleEditItem,
         actions
       },
