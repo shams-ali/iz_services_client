@@ -38,6 +38,7 @@ const forms = [
           'Lien Sale',
           'Liensale Transfer',
           'Salvage ',
+          'Junk',
           'Salvage Certificate',
           'Nonrepairable Certificate',
           'Add Lien Holder',
@@ -45,6 +46,7 @@ const forms = [
           'Vin Verification',
           'Vehicle Record Request',
           'Personalized Plate',
+          'YOM Plate',
           'Legacy Plate',
           'Release of Liability'
         ]
