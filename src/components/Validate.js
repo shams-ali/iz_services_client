@@ -20,8 +20,8 @@ const validate = values => {
   if (plate && plate.length > 7) {
     errors.plate = 'Must be less than 7 characters';
   }
-  if (make && make.length > 4) {
-    errors.make = 'Must be less than 4 letters';
+  if (make && make.length > 5) {
+    errors.make = 'Must be 5 characters or less';
   }
 
   return Object.assign(
