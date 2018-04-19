@@ -26,6 +26,8 @@ const forms = [
         name: 'case_type',
         select: [
           'Partial Year',
+          'No Record',
+          'Out Of State Salvaged',
           'Renewal',
           'Duplicate sticker',
           'Duplicate Plate',
