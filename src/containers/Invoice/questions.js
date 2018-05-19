@@ -51,7 +51,19 @@ const forms = [
           'Personalized Plate',
           'YOM Plate',
           'Legacy Plate',
-          'Release of Liability'
+          'Release of Liability',
+          'Out of county',
+          'Transfer of legal owner',
+          'Remove legal owner',
+          'Add legal owner',
+          'One way trip permit',
+          'Insurance',
+          'Pay traffic ticket',
+          'Suspense transaction ',
+          'Non-repairable certifica',
+          'Issue salvage certificate ',
+          'Address change',
+          'Release of liability',
         ]
       },
       {

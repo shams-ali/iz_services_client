@@ -10,6 +10,7 @@ import {
 } from 'material-ui/Table';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import Gesture from 'material-ui/svg-icons/content/move-to-inbox';
 import {
   pick,
   find,
@@ -87,7 +88,7 @@ export default class TableExampleComplex extends Component {
   }
 
   render() {
-    const { mainFields, forms, invoice } = this.props;
+    const { mainFields, forms, invoice, actions: { push} } = this.props;
     return (
       <div>
         {map(pick(invoice, mainFields), (items, mainField) => {
@@ -139,7 +140,7 @@ export default class TableExampleComplex extends Component {
                         textAlign: 'center'
                       }}
                     >
-                      {capitalize(mainField)}
+                      {`Total ${capitalize(mainField)}: ${totalDue}`}
                     </TableHeaderColumn>
                   </TableRow>
                   <TableRow>
@@ -164,27 +165,28 @@ export default class TableExampleComplex extends Component {
                     </TableRow>
                   ))}
                 </TableBody>
-                <TableFooter className="table-footer">
+                <TableFooter>
                   <TableRow>
                     <TableRowColumn
                       colSpan={size(finalTotals)}
-                      style={{
-                        textAlign: 'center'
-                      }}
                     >
-                      {`Total ${capitalize(mainField)}: ${totalDue}`}
+                      <FloatingActionButton
+                        type="button"
+                        onClick={() => this.openModal(mainField, {}, this.handleCreateItem)} 
+                      >
+                        <ContentAdd />
+                      </FloatingActionButton>
+                      <FloatingActionButton
+                        type="button"
+                        onClick={() =>  push(`/invoice/${invoice._id}/reciept`)} 
+                      >
+                        <Gesture />
+                      </FloatingActionButton>
+
                     </TableRowColumn>
                   </TableRow>
                 </TableFooter>
               </Table>
-              <FloatingActionButton
-                type="button"
-                onClick={() =>
-                  this.openModal(mainField, {}, this.handleCreateItem)
-                }
-              >
-                <ContentAdd />
-              </FloatingActionButton>
             </div>
           );
         })}

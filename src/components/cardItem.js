@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Modal from './modal';
 import InitializeFromStateForm from './InitializeFromStateForm';
 
-const { assign } = Object;
 class CardItem extends Component {
   constructor(props) {
     super(props);
