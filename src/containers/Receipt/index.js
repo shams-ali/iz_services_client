@@ -35,7 +35,9 @@ const Receipt = ({ invoice, getFinalTotals }) => {
     case_type: caseType = '',
     case_status: caseStatus = '',
     vin = '',
-    plate = ''
+    plate = '',
+    createdAt,
+    updatedAt
   } = invoice;
 
   const {
@@ -68,7 +70,8 @@ const Receipt = ({ invoice, getFinalTotals }) => {
           <tr>
             <th colSpan={4}>{`Invoice #${id} Prepared by ${capitalize(
               username
-            )}`}</th>
+            )}`}
+            </th>
             <th>{moment().format('MMMM Do YYYY')}</th>
           </tr>
           <tr>
@@ -81,12 +84,15 @@ const Receipt = ({ invoice, getFinalTotals }) => {
                 Phone: (310) 527-2345 <br /> Fax: (310) 527-2347 <br /> Email:
                 izservices2012@gmail.com
               </p>
+              {`Created At: ${moment(createdAt).format('MMMM Do YYYY')}`} <br />
+              {`Updated At: ${moment(updatedAt).format('MMMM Do YYYY')}`}
             </td>
             <td colSpan={3}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
               <p>
                 {phone} <br />
-                {`${address}`} <br /> {`${city}, ${state} ${zip}`}
+                {address && `${address}${<br />}`}
+                {city && `${city}, `}{`${state} ${zip}`}
               </p>
               <p>
                 {`Vin: ${vin}`} <br />
@@ -159,14 +165,16 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td colSpan={4}>
               <h4>{`Name: ${name} ${dealer}`}</h4>
               {phone} <br />
-              {`Case Type: ${caseType}`} <br />
-              {`Case Status: ${caseStatus}`} <br />
+              {`Created At: ${moment(createdAt).format('MMMM Do YYYY')}`} <br />
+              {`Updated At: ${moment(updatedAt).format('MMMM Do YYYY')}`}
             </td>
             <td colSpan={2}>
               <h4>{`Vin: ${vin}`}</h4>
               <p>
                 {`Plate: ${plate}`} <br />
                 {`Model/Year: ${make} ${modelYear}`} <br />
+                {`Case Type: ${caseType}`} <br />
+                {`Case Status: ${caseStatus}`} <br />
               </p>
             </td>
           </tr>

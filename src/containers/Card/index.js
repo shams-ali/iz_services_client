@@ -26,6 +26,7 @@ class CardContainer extends Component {
         </div>
         <div className="row active-with-click">
           {items
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .filter(createFilter(searchTerm, filterBy))
             .map(itemValues => (
               <CardItem

@@ -4,6 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 import PropTypes from 'prop-types';
 import Modal from './modal';
 import InitializeFromStateForm from './InitializeFromStateForm';
+import moment from 'moment'
 
 class CardItem extends Component {
   constructor(props) {
@@ -115,7 +116,9 @@ class CardItem extends Component {
         case_status: caseStatus,
         _id: id,
         fees,
-        payments
+        payments,
+        createdAt,
+        updatedAt
       },
       actions: { push },
       getBalance,
@@ -138,7 +141,7 @@ class CardItem extends Component {
                 <ListItem primaryText={`Customer: ${name || dealer || ''}`} />
                 {phone && <ListItem primaryText={`Phone: ${phone}`} />}
                 <ListItem
-                  primaryText={`Balance: ${getBalance(fees, payments)}`}
+                  primaryText={`Balance: $${getBalance(fees, payments)}`}
                 />
                 {caseType && (
                   <ListItem primaryText={`Case Type: ${caseType}`} />
@@ -146,6 +149,8 @@ class CardItem extends Component {
                 {caseStatus && (
                   <ListItem primaryText={`Case Status: ${caseStatus}`} />
                 )}
+                <ListItem primaryText={`Created At: ${moment(createdAt).format('MMMM Do YYYY')}`} />
+                <ListItem primaryText={`Updated At: ${moment(updatedAt).format('MMMM Do YYYY')}`} />
               </List>
             )}
             <div className="mc-description">{`Comments: ${comments}`}</div>
@@ -179,12 +184,16 @@ class CardItem extends Component {
 }
 
 CardItem.defaultProps = {
-  itemValues: {}
+  itemValues: {},
+  modalIsOpen: false
 };
+
 CardItem.propTypes = {
   itemValues: PropTypes.objectOf(PropTypes.any),
   actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  forms: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired
+  forms: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  getBalance: PropTypes.func.isRequired,
+  modalIsOpen: PropTypes.objectOf(PropTypes.any)
 };
 
 export default CardItem;

@@ -4,7 +4,6 @@ import { ConnectedRouter } from 'react-router-redux';
 import { history } from './store';
 import Layout from './layout';
 import Login from './containers/Login';
-import Home from './containers/Home';
 import Invoice from './containers/Invoice';
 
 const Routes = () => (
