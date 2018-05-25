@@ -56,7 +56,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
     sum([dmvFee, serviceFee, otherFee, rosBos, rosNum]) - extraDiscount;
 
   const { debit = 0, cash = 0, check = 0, credit = 0 } = payments.reduce(
-    (total, { type, amount }) => assign(total, { [type]: amount }),
+    (total, { type, amount }) => assign(total, { [type]: total[type] + amount || amount }),
     {}
   );
 
