@@ -105,7 +105,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         </thead>
         <tbody>
           <tr>
-            <th colSpan={5}>Fees: ${customerTotalFees}</th>
+            <th colSpan={5}><h5>Fees: ${customerTotalFees}</h5></th>
           </tr>
           <tr>
             <th>DMV FEE</th>
@@ -122,7 +122,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td>${oldPostFee}</td>
           </tr>
           <tr>
-            <th colSpan={5}>Payments: ${customerTotalPayments}</th>
+            <th colSpan={5}><h5>Payments: ${customerTotalPayments}</h5></th>
           </tr>
           <tr colSpan={4}>
             <th colSpan={2}>Cash</th>
@@ -140,10 +140,11 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         <tfoot>
           <tr>
             <th colSpan={5}>
-              Outstanding Balance ${customerTotalFees -
+              <h4>{`Outstanding Balance: -----> $${customerTotalFees -
                 customerTotalPayments -
                 rosBos -
-                rosNum}
+                rosNum}`}
+              </h4>
             </th>
           </tr>
           <tr>
@@ -158,7 +159,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
       <table>
         <thead>
           <tr>
-            <th colSpan={5}>{`Invoice #${id}`} Prepared by Nadeem</th>
+            <th colSpan={5}>{`Invoice #${id}`} Prepared by {capitalize(username)}</th>
             <th>{moment().format('MMMM Do YYYY')}</th>
           </tr>
           <tr>
@@ -181,7 +182,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         </thead>
         <tbody>
           <tr>
-            <th colSpan={6}>Fees: ${adminTotalFees}</th>
+            <th colSpan={6}><h5>Fees: ${adminTotalFees}</h5></th>
           </tr>
           <tr>
             <th>DMV FEE</th>
@@ -200,7 +201,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
             <td>${oldPostFee}</td>
           </tr>
           <tr>
-            <th colSpan={6}>Payments: ${customerTotalPayments}</th>
+            <th colSpan={6}><h5>Payments: ${customerTotalPayments}</h5></th>
           </tr>
           <tr>
             <th colSpan={2}>Cash</th>
@@ -218,7 +219,7 @@ const Receipt = ({ invoice, getFinalTotals }) => {
         <tfoot>
           <tr>
             <th colSpan={6}>
-              Outstanding Balance ${adminTotalFees - customerTotalPayments}
+              <h4>{`Outstanding Balance -----> $${adminTotalFees - customerTotalPayments}`}</h4>
             </th>
           </tr>
         </tfoot>
