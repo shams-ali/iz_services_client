@@ -34,7 +34,7 @@ const RenderInputFields = ({ type, name, select, label }) => {
     <Field
       name={name}
       type={type}
-      normalize={normalize[name]}
+      normalize={normalize[type]}
       floatingLabelText={capitalize(label || name)}
       hintText={capitalize(label || name)}
       component={TextField}

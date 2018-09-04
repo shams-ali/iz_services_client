@@ -1,12 +1,5 @@
 import { capitalize } from 'lodash';
 
-const dealer = value =>
-  value &&
-  value
-    .split(' ')
-    .map(v => capitalize(v))
-    .join(' ');
-
 const name = value =>
   value &&
   value
@@ -44,24 +37,20 @@ const state = value =>
     .slice(0, 2)
     .toUpperCase();
 
-const model_year = value => value && value.replace(/[^\d]/g, '').slice(0, 4);
+const year = value => value && value.replace(/[^\d]/g, '').slice(0, 4);
 
-const make = value => value && value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+const letters = value => value && value.replace(/[^a-zA-Z]/g, '').toUpperCase();
 
-const plate = value => value && value.toUpperCase();
-
-const vin = value => value && value.toUpperCase();
+const upper  = value => value && value.toUpperCase();
 
 const normalize = {
-  dealer,
   name,
   phone,
   zip,
   state,
-  model_year,
-  make,
-  plate,
-  vin
+  year,
+  upper,
+  letters
 };
 
 export default normalize;

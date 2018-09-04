@@ -2,23 +2,23 @@ const forms = [
   {
     name: 'client',
     fields: [
-      { name: 'dealer' },
-      { name: 'name' },
+      { name: 'dealer', type: 'name' },
+      { name: 'name', type: 'name' },
       { name: 'phone', type: 'tel', maxLength: 10 },
       { name: 'email' },
-      { name: 'dl' },
+      { name: 'dl', type: 'upper' },
       { name: 'address' },
       { name: 'city' },
-      { name: 'state', maxLength: 2 },
+      { name: 'state', maxLength: 2, type: 'state' },
       { name: 'zip', type: 'zip', maxLength: 5 }
     ]
   },
   {
     name: 'vehicle',
     fields: [
-      { name: 'vin' },
-      { name: 'plate' },
-      { name: 'make' },
+      { name: 'vin', type: 'upper' },
+      { name: 'plate', type: 'upper' },
+      { name: 'make', type: 'letters' },
       { name: 'model_year', type: 'year' },
       { name: 'exp_date', type: 'date' },
       { name: 'engine' },

@@ -20,9 +20,9 @@ const NavbarInstance = () => (
         <MenuItem eventKey={3.1} href="/invoice">
           Walk-In Application
         </MenuItem>
-        {/* <MenuItem eventKey={3.2} href="/application/dealer">
-          Dealer Application
-        </MenuItem> */}
+        <MenuItem eventKey={3.2} href="/lien">
+          Lien Sale Application
+        </MenuItem>
         <MenuItem divider />
         <MenuItem eventKey={3.3}>Outstanding Client</MenuItem>
       </NavDropdown>

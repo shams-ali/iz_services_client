@@ -30,6 +30,7 @@ const Header = ({ token, logOut, username }) => (
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <MenuItem primaryText="WalkIn Application" href="/invoice/new" />
+          <MenuItem primaryText="Lien Sale Application" href="/lien" />
           <MenuItem primaryText={`Sign out: ${username}`} onClick={logOut} />
         </IconMenu>
       ) : (

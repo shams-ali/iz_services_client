@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { without, omit } from 'lodash';
 import { List, ListItem } from 'material-ui/List';
 import PropTypes from 'prop-types';
+import moment from 'moment'
 import Modal from './modal';
 import InitializeFromStateForm from './InitializeFromStateForm';
-import moment from 'moment'
 
 class CardItem extends Component {
   constructor(props) {
