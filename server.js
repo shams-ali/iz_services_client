@@ -15,17 +15,9 @@ app.use(express.static('build'));
 
 app.use(
   '/v1',
-  proxy(API_URL, {
-    proxyReqPathResolver: req => {
-      console.log(API_URL, 'this is api url');
-      console.log(`/v1${url.parse(req.url).path}`, 'going here?');
-      return `/v1${url.parse(req.url).path}`;
-    }
-  })
+  proxy(API_URL, { proxyReqPathResolver: req => `/v1${url.parse(req.url).path}` })
 );
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'build', 'index.html')));
 
 app.listen(PORT, err => console.warn(err || `Listening on ${PORT}`));
