@@ -24,7 +24,7 @@ let Login = props => {
   }
 
   return (
-    <form onSubmit={handleSubmit(getAuth)}>
+    <form className="center" onSubmit={handleSubmit(getAuth)}>
       <div>
         <Field
           name="username"

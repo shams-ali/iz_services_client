@@ -26,19 +26,7 @@ const forms = [
         name: 'BUREAU OF AUTO REPAIR #'
       },
       {
-        name: 'P1-6-Towing 4000 or less'
-      },
-      {
         name: 'P1-6-Storage 4000 or less'
-      },
-      {
-        name: 'P1-6-Repairs 4000 or less'
-      },
-      {
-        name: 'P1-6-Cost of Selling 4000 or less'
-      },
-      {
-        name: 'P1-6-Parking Violations 4000 or less'
       },
       {
         name: 'P1-1-Lic No'
