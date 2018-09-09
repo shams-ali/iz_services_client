@@ -85,7 +85,7 @@ class Lien extends Component {
 }
 
 Lien.propTypes = {
-  actions: PropTypes.func.isRequired
+  actions: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
