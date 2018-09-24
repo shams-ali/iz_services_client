@@ -1,5 +1,6 @@
 const { assign } = Object;
-const required = ['vin', 'model_year'];
+const invoiceRequired = ['vin', 'model_year'];
+const lienRequired = ['P1-1-Year']
 
 const validate = values => {
   const { vin, email, zip, year, plate, make } = values;
@@ -11,8 +12,8 @@ const validate = values => {
   if (zip && zip.length !== 5) {
     errors.zip = 'Must be five digits';
   }
-  if (year && year.length !== 4) {
-    errors.year = 'Must be four digits';
+  if (year && year.length !== 2) {
+    errors.year = 'Must be two digits';
   }
   if (vin && vin.length > 17) {
     errors.vin = 'Must be less than 17 characters';
@@ -24,9 +25,13 @@ const validate = values => {
     errors.make = 'Must be 5 characters or less';
   }
 
+  
+
+
+
   return Object.assign(
     errors,
-    required.reduce(
+    [...invoiceRequired, ...lienRequired].reduce(
       (requiredErrors, field) =>
         assign(requiredErrors, !values[field] ? { [field]: 'Required' } : {}),
       {}

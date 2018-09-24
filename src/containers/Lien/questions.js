@@ -45,7 +45,7 @@ const forms = [
         type: 'letters'
       },
       {
-        name: 'P1-1-Year', // validation 2 characters
+        name: 'year', // validation 2 characters
         type: 'year'
       },
       {

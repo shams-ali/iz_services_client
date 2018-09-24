@@ -37,7 +37,7 @@ const state = value =>
     .slice(0, 2)
     .toUpperCase();
 
-const year = value => value && value.replace(/[^\d]/g, '').slice(0, 4);
+const year = value => value && value.replace(/[^\d]/g, '').slice(0, 2);
 
 const letters = value => value && value.replace(/[^a-zA-Z]/g, '').toUpperCase();
 
