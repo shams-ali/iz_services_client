@@ -26,9 +26,6 @@ const forms = [
         name: 'BUREAU OF AUTO REPAIR #'
       },
       {
-        name: 'P1-6-Storage 4000 or less'
-      },
-      {
         name: 'P1-1-Lic No'
       },
       {
@@ -37,28 +34,28 @@ const forms = [
         maxLength: 2
       },
       {
-        name: 'P1-1-Lic Exp Date',
+        name: 'P1-1-Lic Exp Date', // not required
         type: 'date'
       },
       {
-        name: 'P1-1-VIN'
+        name: 'P1-1-VIN' // all caps
       },
       {
-        name: 'P1-1-Make',
+        name: 'P1-1-Make', // all caps
         type: 'letters'
       },
       {
-        name: 'P1-1-Year',
+        name: 'P1-1-Year', // validation 2 characters
         type: 'year'
       },
       {
-        name: 'P1-1-Model'
+        name: 'P1-1-Model' // not required
       },
       {
-        name: 'P1-1-Body type'
+        name: 'P1-1-Body type' // not required capital
       },
       {
-        name: 'P1-1-Eng No (M/C only)'
+        name: 'P1-1-Eng No (M/C only)' // not required
       },
       {
         name: 'P1-2-Date Veh into possession',
@@ -69,7 +66,7 @@ const forms = [
         type: 'date'
       },
       {
-        name: 'P1-2-Date work-serv completed',
+        name: 'P1-2-Date work-serv completed', // not required
         type: 'date'
       },
       {
@@ -117,16 +114,6 @@ const forms = [
   },
   {
     name: 'LEGAL OWNER',
-    fields: [
-      { name: 'name', type: 'name' },
-      { name: 'address' },
-      { name: 'city' },
-      { name: 'state', maxLength: 2, type: 'state' },
-      { name: 'zip', type: 'zip', maxLength: 5 }
-    ]
-  },
-  {
-    name: 'INTERESTED PARTIES',
     fields: [
       { name: 'name', type: 'name' },
       { name: 'address' },
