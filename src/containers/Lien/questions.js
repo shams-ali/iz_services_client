@@ -23,10 +23,12 @@ const forms = [
         type: 'number'
       },
       {
-        name: 'BUREAU OF AUTO REPAIR #'
+        name: 'BUREAU OF AUTO REPAIR #',
+        type: 'upper'
       },
       {
-        name: 'P1-1-Lic No'
+        name: 'P1-1-Lic No',
+        type: 'upper'
       },
       {
         name: 'P1-1-States',
@@ -38,21 +40,23 @@ const forms = [
         type: 'date'
       },
       {
-        name: 'P1-1-VIN' // all caps
+        name: 'P1-1-VIN', // all caps
+        type: 'upper'
       },
       {
         name: 'P1-1-Make', // all caps
         type: 'letters'
       },
       {
-        name: 'year', // validation 2 characters
+        name: 'year',
         type: 'year'
       },
       {
         name: 'P1-1-Model' // not required
       },
       {
-        name: 'P1-1-Body type' // not required capital
+        name: 'P1-1-Body type', // not required capital
+        type: 'upper'
       },
       {
         name: 'P1-1-Eng No (M/C only)' // not required
@@ -70,17 +74,20 @@ const forms = [
         type: 'date'
       },
       {
-        name: 'P1-7-Lienholder Name'
+        name: 'P1-7-Lienholder Name',
+        type: 'name'
       },
       {
         name: 'tel',
         type: 'phone'
       },
       {
-        name: 'P1-7-Street Address-1'
+        name: 'P1-7-Street Address-1',
+        type: 'name'
       },
       {
-        name: 'P1-7-City-1'
+        name: 'P1-7-City-1',
+        type: 'name'
       },
       {
         name: 'P1-7-States-1',
@@ -106,8 +113,8 @@ const forms = [
     name: 'REGISTERED OWNER',
     fields: [
       { name: 'name', type: 'name' },
-      { name: 'address' },
-      { name: 'city' },
+      { name: 'address', type: 'name' },
+      { name: 'city', type: 'name' },
       { name: 'state', maxLength: 2, type: 'state' },
       { name: 'zip', type: 'zip', maxLength: 5 }
     ]
@@ -116,8 +123,18 @@ const forms = [
     name: 'LEGAL OWNER',
     fields: [
       { name: 'name', type: 'name' },
-      { name: 'address' },
-      { name: 'city' },
+      { name: 'address', tpe: 'name' },
+      { name: 'city', type: 'name' },
+      { name: 'state', maxLength: 2, type: 'state' },
+      { name: 'zip', type: 'zip', maxLength: 5 }
+    ]
+  },
+  {
+    name: 'INTERESTED PARTIES',
+    fields: [
+      { name: 'name', type: 'name' },
+      { name: 'address', tpe: 'name' },
+      { name: 'city', type: 'name' },
       { name: 'state', maxLength: 2, type: 'state' },
       { name: 'zip', type: 'zip', maxLength: 5 }
     ]
